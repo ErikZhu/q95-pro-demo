@@ -1,0 +1,106 @@
+/* ── Q95 Pro — Global Design Tokens & Reset ── */
+
+:root {
+  /* ── HUD Color System ── */
+  --hud-bg: #0a0a1a;
+  --hud-surface: rgba(10, 15, 30, 0.85);
+  --hud-surface-hover: rgba(20, 30, 50, 0.9);
+  --hud-border: rgba(100, 200, 255, 0.12);
+  --hud-border-hover: rgba(100, 200, 255, 0.3);
+  --hud-text-primary: rgba(255, 255, 255, 0.92);
+  --hud-text-secondary: rgba(255, 255, 255, 0.6);
+  --hud-text-tertiary: rgba(255, 255, 255, 0.35);
+  --hud-accent: rgba(100, 200, 255, 0.9);
+  --hud-accent-glow: rgba(100, 200, 255, 0.15);
+  --hud-purple: rgba(180, 130, 255, 0.85);
+  --hud-amber: rgba(255, 180, 60, 0.9);
+  --hud-success: rgba(80, 220, 160, 0.9);
+  --hud-error: rgba(255, 90, 90, 0.9);
+  --hud-warning: rgba(255, 200, 60, 0.9);
+
+  /* ── Shadows & Glow ── */
+  --shadow-subtle: 0 0 8px rgba(100, 200, 255, 0.06);
+  --shadow-medium: 0 0 16px rgba(100, 200, 255, 0.1);
+  --shadow-strong: 0 0 24px rgba(100, 200, 255, 0.15);
+  --shadow-panel: 0 4px 24px rgba(0, 0, 0, 0.5);
+
+  /* ── Typography ── */
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'SF Mono', 'Fira Code', ui-monospace, Consolas, monospace;
+
+  /* ── Spacing (4px grid) ── */
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 6px;
+  --sp-4: 8px;
+  --sp-5: 12px;
+  --sp-6: 16px;
+  --sp-7: 24px;
+  --sp-8: 32px;
+
+  /* ── Radius ── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* ── Animation ── */
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  font: 13px/1.45 var(--sans);
+  color-scheme: dark;
+  color: var(--hud-text-primary);
+  background: var(--hud-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--hud-bg);
+  font-family: var(--sans);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  margin: 0;
+}
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 200, 255, 0.15);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 200, 255, 0.25);
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(100, 200, 255, 0.25);
+  color: #fff;
+}
