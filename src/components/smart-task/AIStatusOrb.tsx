@@ -15,8 +15,8 @@ export interface AIStatusOrbProps {
 /* ── Single-ball color configs ── */
 const T: Record<AIStatus, { bg: string; shadow: string; anim: string }> = {
   idle: {
-    bg: '',  // uses GIF
-    shadow: '0 0 6px rgba(0,200,255,0.3), 0 0 18px rgba(0,120,220,0.15)',
+    bg: '',
+    shadow: 'none',
     anim: '',
   },
   listening: {
