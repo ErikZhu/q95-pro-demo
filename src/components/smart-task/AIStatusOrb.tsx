@@ -17,9 +17,9 @@ const STATUS_THEME: Record<AIStatus, {
   glow: string; glowStrong: string; ring: string;
 }> = {
   idle: {
-    grad1: '#4facfe', grad2: '#00f2fe', grad3: '#43e97b',
-    glow: 'rgba(79, 172, 254, 0.4)', glowStrong: 'rgba(0, 242, 254, 0.6)',
-    ring: 'rgba(67, 233, 123, 0.3)',
+    grad1: '#0a1628', grad2: '#0d2847', grad3: '#0a1e3d',
+    glow: 'rgba(0, 180, 255, 0.35)', glowStrong: 'rgba(0, 220, 255, 0.55)',
+    ring: 'rgba(0, 140, 255, 0.2)',
   },
   listening: {
     grad1: '#43e97b', grad2: '#38f9d7', grad3: '#4facfe',
@@ -55,6 +55,10 @@ const KEYFRAMES = `
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+@keyframes orb2-idle-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,180,255,0.3), 0 0 20px rgba(0,120,255,0.15), 0 0 35px rgba(0,200,255,0.08), inset 0 0 8px rgba(0,180,255,0.15); }
+  50%      { box-shadow: 0 0 12px rgba(0,200,255,0.45), 0 0 28px rgba(0,150,255,0.25), 0 0 45px rgba(0,220,255,0.12), inset 0 0 10px rgba(0,200,255,0.2); }
+}
 @keyframes orb2-shimmer {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
@@ -62,6 +66,10 @@ const KEYFRAMES = `
 @keyframes orb2-hint {
   0%, 100% { opacity: 0.3; transform: scale(1); }
   50%      { opacity: 0.8; transform: scale(1.25); }
+}
+@keyframes orb2-neon-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 `;
 
@@ -94,11 +102,19 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     position: 'absolute',
     inset: 0,
     borderRadius: '50%',
-    background: `conic-gradient(from 0deg, ${t.grad1}33, ${t.grad2}33, ${t.grad3}33, ${t.grad1}33)`,
+    background: status === 'idle'
+      ? `conic-gradient(from 0deg, rgba(0,180,255,0.15), rgba(0,60,120,0.05), rgba(0,220,255,0.2), rgba(0,80,160,0.05), rgba(0,180,255,0.15))`
+      : `conic-gradient(from 0deg, ${t.grad1}33, ${t.grad2}33, ${t.grad3}33, ${t.grad1}33)`,
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)',
-    border: `1px solid ${t.glow}`,
-    animation: status === 'thinking' ? 'orb2-spin-border 2s linear infinite' : undefined,
+    border: status === 'idle'
+      ? '1px solid rgba(0, 200, 255, 0.25)'
+      : `1px solid ${t.glow}`,
+    animation: status === 'thinking'
+      ? 'orb2-spin-border 2s linear infinite'
+      : status === 'idle'
+        ? 'orb2-neon-spin 8s linear infinite'
+        : undefined,
   };
 
   /* ── Core orb with conic gradient ── */
@@ -107,17 +123,29 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     width: size,
     height: size,
     borderRadius: '50%',
-    background: `conic-gradient(from 45deg, ${t.grad1}, ${t.grad2}, ${t.grad3}, ${t.grad1})`,
-    boxShadow: [
-      `0 0 ${r * 0.8}px ${t.glow}`,
-      `0 0 ${r * 1.6}px ${t.ring}`,
-      `inset 0 0 ${r * 0.4}px rgba(255,255,255,0.25)`,
-    ].join(', '),
+    background: status === 'idle'
+      ? `radial-gradient(circle at 40% 35%, #0d3060 0%, #091a30 50%, #050e1a 100%)`
+      : `conic-gradient(from 45deg, ${t.grad1}, ${t.grad2}, ${t.grad3}, ${t.grad1})`,
+    boxShadow: status === 'idle'
+      ? [
+          `0 0 ${r * 0.6}px rgba(0, 180, 255, 0.3)`,
+          `0 0 ${r * 1.4}px rgba(0, 120, 255, 0.15)`,
+          `0 0 ${r * 2.2}px rgba(0, 200, 255, 0.08)`,
+          `inset 0 0 ${r * 0.5}px rgba(0, 180, 255, 0.15)`,
+          `inset 0 -${r * 0.2}px ${r * 0.4}px rgba(0, 220, 255, 0.1)`,
+        ].join(', ')
+      : [
+          `0 0 ${r * 0.8}px ${t.glow}`,
+          `0 0 ${r * 1.6}px ${t.ring}`,
+          `inset 0 0 ${r * 0.4}px rgba(255,255,255,0.25)`,
+        ].join(', '),
     animation: status === 'listening'
       ? 'orb2-breathe 2s ease-in-out infinite'
       : status === 'thinking'
         ? 'orb2-rotate 3s linear infinite'
-        : undefined,
+        : status === 'idle'
+          ? 'orb2-idle-glow 4s ease-in-out infinite'
+          : undefined,
   };
 
   /* ── Inner highlight (glass refraction) ── */
@@ -128,7 +156,9 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     width: '45%',
     height: '35%',
     borderRadius: '50%',
-    background: 'linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.05) 100%)',
+    background: status === 'idle'
+      ? 'linear-gradient(135deg, rgba(0,180,255,0.25) 0%, rgba(0,100,200,0.05) 100%)'
+      : 'linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.05) 100%)',
     pointerEvents: 'none',
   };
 
