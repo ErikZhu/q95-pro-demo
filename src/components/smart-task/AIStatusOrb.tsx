@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { AIStatus } from '../../types/ai';
 import type { OrbMenuState } from '../../services/OrbMenuStateMachine';
+import orbIdleGif from '../../assets/orb-idle.gif';
 
 export interface AIStatusOrbProps {
   status: AIStatus;
@@ -14,9 +15,9 @@ export interface AIStatusOrbProps {
 /* ── Single-ball color configs ── */
 const T: Record<AIStatus, { bg: string; shadow: string; anim: string }> = {
   idle: {
-    bg: 'radial-gradient(circle at 50% 50%, #040810 0%, #060d18 40%, #0a1a30 70%, #1a4070 100%)',
-    shadow: '0 0 4px rgba(0,200,255,0.6), 0 0 12px rgba(0,160,240,0.4), 0 0 30px rgba(0,120,220,0.2), 0 0 60px rgba(0,80,180,0.1)',
-    anim: 'orb-idle 4s ease-in-out infinite',
+    bg: '',  // uses GIF
+    shadow: '0 0 6px rgba(0,200,255,0.3), 0 0 18px rgba(0,120,220,0.15)',
+    anim: '',
   },
   listening: {
     bg: 'radial-gradient(circle at 35% 30%, #1a5c3a 0%, #0c3520 45%, #061d10 100%)',
@@ -75,7 +76,19 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
   useMemo(() => injectCSS(), []);
   const c = T[status];
 
-  const orb: React.CSSProperties = {
+  const orb: React.CSSProperties = status === 'idle' ? {
+    width: size,
+    height: size,
+    borderRadius: '50%',
+    backgroundImage: `url(${orbIdleGif})`,
+    backgroundSize: '140%',
+    backgroundPosition: 'center',
+    boxShadow: c.shadow,
+    transition: 'box-shadow 0.6s ease',
+    flexShrink: 0,
+    position: 'relative',
+    overflow: 'hidden',
+  } : {
     width: size,
     height: size,
     borderRadius: '50%',
