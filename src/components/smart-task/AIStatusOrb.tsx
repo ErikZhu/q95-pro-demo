@@ -80,14 +80,10 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     width: size,
     height: size,
     borderRadius: '50%',
-    backgroundImage: `url(${orbIdleGif})`,
-    backgroundSize: '220%',
-    backgroundPosition: 'center',
+    overflow: 'hidden',
     boxShadow: c.shadow,
-    transition: 'box-shadow 0.6s ease',
     flexShrink: 0,
     position: 'relative',
-    overflow: 'hidden',
   } : {
     width: size,
     height: size,
@@ -99,6 +95,24 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     flexShrink: 0,
     position: 'relative',
   };
+
+  /* GIF img for idle — ensures animation always plays */
+  const gifImg = status === 'idle' ? (
+    <img
+      src={orbIdleGif}
+      alt=""
+      style={{
+        width: '220%',
+        height: '220%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        objectFit: 'cover',
+        pointerEvents: 'none',
+      }}
+    />
+  ) : null;
 
   /* responding ripples */
   const ripples = status === 'responding' ? [0, 0.5, 1].map((d, i) => (
@@ -163,7 +177,9 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
       onPointerEnter={onGazeStart}
       onPointerLeave={onGazeEnd}
     >
-      <div style={orb} />
+      <div style={orb}>
+        {gifImg}
+      </div>
       {thinkBorder}
       {ripples}
       {hint}
