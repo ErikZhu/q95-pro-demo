@@ -338,7 +338,7 @@ export function SmartTaskZoneView({
         <div style={S.compact}>
           <AIStatusOrb
             status={aiStatus}
-            size={28}
+            size={40}
             orbMenuState={orbMenuState}
             activeAppId={activeAppId}
             onGazeStart={onOrbGazeStart}
@@ -385,7 +385,7 @@ export function SmartTaskZoneView({
         <div style={S.confirmPrompt}>
           <AIStatusOrb
             status={aiStatus}
-            size={28}
+            size={40}
             orbMenuState={orbMenuState}
             activeAppId={activeAppId}
           />

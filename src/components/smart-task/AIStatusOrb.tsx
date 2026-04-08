@@ -81,7 +81,7 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     height: size,
     borderRadius: '50%',
     backgroundImage: `url(${orbIdleGif})`,
-    backgroundSize: '140%',
+    backgroundSize: '220%',
     backgroundPosition: 'center',
     boxShadow: c.shadow,
     transition: 'box-shadow 0.6s ease',
