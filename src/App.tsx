@@ -106,7 +106,83 @@ export default function App() {
     );
   }, []);
 
+  // 音乐播放状态（语音指令可触发）
+  const [musicState, setMusicState] = useState({
+    status: 'paused' as 'playing' | 'paused' | 'stopped',
+    currentTrack: null as { id: string; name: string; artist: string; album: string; duration: number } | null,
+    progress: 0,
+    volume: 70,
+    pauseReason: null as string | null,
+  });
+
   const launchApp = useCallback(async (id: string) => { setActiveView(id); }, []);
+
+  /** 意图路由：根据语音内容判断是否需要切换场景 */
+  const routeIntent = useCallback((text: string): boolean => {
+    const t = text.toLowerCase();
+
+    // 音乐场景：播放/音乐/歌/周杰伦等关键词
+    if (t.includes('播放') || t.includes('音乐') || t.includes('歌') || t.includes('周杰伦') || t.includes('听') || t.includes('play') || t.includes('music')) {
+      // 从文本中提取歌曲和歌手信息
+      let trackName = '稻香';
+      let artist = '周杰伦';
+      if (t.includes('稻香')) trackName = '稻香';
+      else if (t.includes('晴天')) trackName = '晴天';
+      else if (t.includes('七里香')) trackName = '七里香';
+      else if (t.includes('简单爱')) trackName = '简单爱';
+      if (t.includes('周杰伦') || t.includes('jay')) artist = '周杰伦';
+      else if (t.includes('林俊杰') || t.includes('jj')) artist = '林俊杰';
+      else if (t.includes('陈奕迅') || t.includes('eason')) artist = '陈奕迅';
+
+      setMusicState({
+        status: 'playing',
+        currentTrack: { id: 'track-1', name: trackName, artist, album: `${artist}精选`, duration: 234 },
+        progress: 0,
+        volume: 70,
+        pauseReason: null,
+      });
+      setActiveView('music');
+      return true;
+    }
+
+    // 导航场景
+    if (t.includes('导航') || t.includes('怎么走') || t.includes('路线') || t.includes('navigate')) {
+      setActiveView('navigation');
+      return true;
+    }
+
+    // 拍照场景
+    if (t.includes('拍照') || t.includes('相机') || t.includes('照片') || t.includes('camera')) {
+      setActiveView('camera');
+      return true;
+    }
+
+    // 翻译场景
+    if (t.includes('翻译') || t.includes('translate')) {
+      setActiveView('translator');
+      return true;
+    }
+
+    // 健康场景
+    if (t.includes('心率') || t.includes('健康') || t.includes('血氧') || t.includes('步数')) {
+      setActiveView('health');
+      return true;
+    }
+
+    // 通知场景
+    if (t.includes('通知') || t.includes('消息') || t.includes('未读')) {
+      setActiveView('notifications');
+      return true;
+    }
+
+    // 设置场景
+    if (t.includes('设置') || t.includes('亮度') || t.includes('音量')) {
+      setActiveView('settings');
+      return true;
+    }
+
+    return false; // 不匹配任何场景
+  }, []);
 
   const onInput = useCallback(async (e: InputEvent) => {
     // 处理语音/文本输入 → 调用 AI 对话
@@ -118,25 +194,28 @@ export default function App() {
       setAiFeedbackText(`🎤 "${userText}"`);
       setAiConversation(prev => [...prev, { role: 'user', text: userText }]);
 
-      // 2. 切换到思考状态
+      // 2. 意图路由：检查是否需要切换场景
+      const routed = routeIntent(userText);
+
+      // 3. 切换到思考状态
       setTimeout(() => setAiStatus('thinking'), 300);
       setTimeout(() => setAiFeedbackText('🤔 正在思考...'), 300);
 
-      // 3. 调用 DeepSeek API
+      // 4. 调用 DeepSeek API
       const response = await sendChat(userText);
 
-      // 4. 显示 AI 回复
+      // 5. 显示 AI 回复
       setAiStatus('responding');
       setAiFeedbackText(`💬 ${response.text}`);
       setAiConversation(prev => [...prev, { role: 'assistant', text: response.text }]);
 
-      // 5. 5秒后回到 idle
+      // 6. 如果路由了场景，反馈文字保留更久
       setTimeout(() => {
         setAiStatus('idle');
         setAiFeedbackText('');
-      }, 8000);
+      }, routed ? 5000 : 8000);
     }
-  }, []);
+  }, [routeIntent]);
 
   const toggleDemo = useCallback(() => setShowDemo((p) => !p), []);
 
@@ -146,7 +225,7 @@ export default function App() {
       case 'notifications': return <NotificationCenterView notifications={notifs} groupedNotifications={new Map()} mode="list" unreadCount={notifs.filter((n) => !n.isRead).length} />;
       case 'navigation': return <ARNavigationView navigationState={nav} route={route} />;
       case 'camera': return <CameraView recordingState={{ isRecording: false, duration: 0, startTime: null, resolution: { width: 1920, height: 1080 } }} storageInfo={{ total: 8192, used: 2048, remaining: 6144, isLow: false }} />;
-      case 'music': return <MusicPlayerView playbackState={{ status: 'paused', currentTrack: null, progress: 0, volume: 70, pauseReason: null }} />;
+      case 'music': return <MusicPlayerView playbackState={musicState} />;
       case 'ai': return <AIAssistantView status="idle" conversation={[]} />;
       case 'translator': return <TranslatorView state={{ isActive: false, sourceLang: 'zh-CN', targetLang: 'en', inputMode: 'voice', isOnline: true, results: [], isTranslating: false }} />;
       case 'teleprompter': return <TeleprompterView state={{ status: 'idle', text: '', scrollPosition: 0, scrollSpeed: 2, fontSize: 24, opacity: 0.85, phoneConnected: false }} />;
