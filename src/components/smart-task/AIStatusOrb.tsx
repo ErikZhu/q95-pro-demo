@@ -14,8 +14,8 @@ export interface AIStatusOrbProps {
 /* ── Single-ball color configs ── */
 const T: Record<AIStatus, { bg: string; shadow: string; anim: string }> = {
   idle: {
-    bg: 'radial-gradient(circle at 35% 30%, #1a3a5c 0%, #0c1f35 45%, #06101d 100%)',
-    shadow: '0 0 6px rgba(0,160,255,0.4), 0 0 18px rgba(0,120,220,0.2), 0 0 40px rgba(0,100,200,0.1)',
+    bg: 'radial-gradient(circle at 38% 32%, #4db8ff 0%, #1a6fcc 35%, #0e4a8a 65%, #0a2d5c 100%)',
+    shadow: '0 0 8px rgba(77,184,255,0.5), 0 0 20px rgba(26,111,204,0.35), 0 0 45px rgba(14,74,138,0.15)',
     anim: 'orb-idle 4s ease-in-out infinite',
   },
   listening: {
@@ -37,8 +37,8 @@ const T: Record<AIStatus, { bg: string; shadow: string; anim: string }> = {
 
 const KF = `
 @keyframes orb-idle {
-  0%, 100% { box-shadow: 0 0 6px rgba(0,160,255,0.4), 0 0 18px rgba(0,120,220,0.2), 0 0 40px rgba(0,100,200,0.1); }
-  50%      { box-shadow: 0 0 10px rgba(0,180,255,0.55), 0 0 26px rgba(0,140,240,0.3), 0 0 50px rgba(0,120,220,0.15); }
+  0%, 100% { box-shadow: 0 0 8px rgba(77,184,255,0.5), 0 0 20px rgba(26,111,204,0.35), 0 0 45px rgba(14,74,138,0.15); }
+  50%      { box-shadow: 0 0 12px rgba(77,200,255,0.65), 0 0 28px rgba(40,130,220,0.45), 0 0 55px rgba(20,90,160,0.2); }
 }
 @keyframes orb-breathe {
   0%, 100% { transform: scale(1); }
