@@ -26,6 +26,8 @@ import { SmartTaskZoneService } from './services/SmartTaskZone';
 import { NavigationEngine } from './services/NavigationEngine';
 import type { OrbMenuItemData } from './components/smart-task/OrbMenuItem';
 import { OrbMenuView } from './components/smart-task/OrbMenuView';
+import { sendChat } from './services/DeepSeekChat';
+import type { AIStatus } from './types/ai';
 
 /** Orb 菜单项数据：4 个应用导航入口 */
 const ORB_MENU_ITEMS: OrbMenuItemData[] = [
@@ -79,6 +81,11 @@ export default function App() {
   // 模拟眼动光标位置 (百分比)
   const [gazePos, setGazePos] = useState<{ x: number; y: number } | null>(null);
 
+  // AI 对话状态
+  const [aiStatus, setAiStatus] = useState<AIStatus>('idle');
+  const [aiFeedbackText, setAiFeedbackText] = useState<string>('');
+  const [aiConversation, setAiConversation] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([]);
+
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
       {
@@ -100,7 +107,37 @@ export default function App() {
   }, []);
 
   const launchApp = useCallback(async (id: string) => { setActiveView(id); }, []);
-  const onInput = useCallback((_e: InputEvent) => {}, []);
+
+  const onInput = useCallback(async (e: InputEvent) => {
+    // 处理语音/文本输入 → 调用 AI 对话
+    if (e.source === 'voice' && e.type === 'command' && e.data?.text) {
+      const userText = String(e.data.text);
+
+      // 1. 显示用户输入
+      setAiStatus('listening');
+      setAiFeedbackText(`🎤 "${userText}"`);
+      setAiConversation(prev => [...prev, { role: 'user', text: userText }]);
+
+      // 2. 切换到思考状态
+      setTimeout(() => setAiStatus('thinking'), 300);
+      setTimeout(() => setAiFeedbackText('🤔 正在思考...'), 300);
+
+      // 3. 调用 DeepSeek API
+      const response = await sendChat(userText);
+
+      // 4. 显示 AI 回复
+      setAiStatus('responding');
+      setAiFeedbackText(`💬 ${response.text}`);
+      setAiConversation(prev => [...prev, { role: 'assistant', text: response.text }]);
+
+      // 5. 5秒后回到 idle
+      setTimeout(() => {
+        setAiStatus('idle');
+        setAiFeedbackText('');
+      }, 8000);
+    }
+  }, []);
+
   const toggleDemo = useCallback(() => setShowDemo((p) => !p), []);
 
   const content = () => {
@@ -125,9 +162,17 @@ export default function App() {
       <div className="top-bar-row">
         <div className="smart-task-zone-slot">
           <SmartTaskZoneView
-            aiStatus="idle"
-            tasks={[]}
+            aiStatus={aiStatus}
+            tasks={aiConversation.length > 0 ? [{
+              taskId: 'ai-chat',
+              source: 'ai_assistant',
+              title: 'AI 对话',
+              statusText: aiConversation[aiConversation.length - 1]?.text || '',
+              priority: 1,
+              timestamp: Date.now(),
+            }] : []}
             state="compact"
+            aiFeedbackText={aiFeedbackText}
             orbMenuState={orbMenuState}
             orbMenuItems={ORB_MENU_ITEMS}
             focusedItemId={focusedItemId}
