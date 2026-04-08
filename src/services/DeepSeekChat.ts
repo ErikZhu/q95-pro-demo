@@ -7,13 +7,17 @@ const GEMINI_MODEL = 'gemini-2.5-flash-lite-preview-06-17';
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 
 const getGeminiKey = (): string => {
+  // 1. 先检查 localStorage 中的 DeepSeek key
+  const dsStored = typeof localStorage !== 'undefined' ? localStorage.getItem('DEEPSEEK_API_KEY') : null;
+  if (dsStored) return `deepseek:${dsStored}`;
+  // 2. 内置 DeepSeek key（demo 用，不需要翻墙）
+  const builtinDS = 'sk-7076f0cb8d7b49f5b725f69b151c62a7';
+  if (builtinDS) return `deepseek:${builtinDS}`;
+  // 3. Gemini 备选
   const envKey = (import.meta as Record<string, Record<string, string>>).env?.VITE_GEMINI_API_KEY;
   if (envKey) return envKey;
-  const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('GEMINI_API_KEY') : null;
-  if (stored) return stored;
-  // DeepSeek 备选
-  const dsKey = typeof localStorage !== 'undefined' ? localStorage.getItem('DEEPSEEK_API_KEY') : null;
-  if (dsKey) return `deepseek:${dsKey}`;
+  const geminiStored = typeof localStorage !== 'undefined' ? localStorage.getItem('GEMINI_API_KEY') : null;
+  if (geminiStored) return geminiStored;
   return '';
 };
 
@@ -31,6 +35,7 @@ const SYSTEM_INSTRUCTION = `你是 Q95 Pro 智能眼镜的 AI 助手，名叫"�
 - 如果用户让你做某件事，就假装你已经做了并告诉结果`;
 
 let history: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+let dsHistory: Array<{ role: string; content: string }> = [];
 
 /** 调用 Gemini API */
 async function callGemini(userMessage: string, apiKey: string): Promise<string> {
@@ -56,6 +61,7 @@ async function callGemini(userMessage: string, apiKey: string): Promise<string> 
 
 /** 调用 DeepSeek API */
 async function callDeepSeek(userMessage: string, apiKey: string): Promise<string> {
+  dsHistory.push({ role: 'user', content: userMessage });
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -63,7 +69,7 @@ async function callDeepSeek(userMessage: string, apiKey: string): Promise<string
       model: 'deepseek-chat',
       messages: [
         { role: 'system', content: SYSTEM_INSTRUCTION },
-        { role: 'user', content: userMessage },
+        ...dsHistory.slice(-8),
       ],
       max_tokens: 120,
       temperature: 0.8,
@@ -71,7 +77,9 @@ async function callDeepSeek(userMessage: string, apiKey: string): Promise<string
   });
   if (!res.ok) throw new Error(`DeepSeek ${res.status}`);
   const data = await res.json();
-  return data.choices?.[0]?.message?.content?.trim() || '抱歉，我没听清。';
+  const reply = data.choices?.[0]?.message?.content?.trim() || '抱歉，我没听清。';
+  dsHistory.push({ role: 'assistant', content: reply });
+  return reply;
 }
 
 /** 本地智能回复（最终降级） */
@@ -95,23 +103,23 @@ function localReply(text: string): string {
 export async function sendChat(userMessage: string): Promise<ChatResponse> {
   const key = getGeminiKey();
 
-  // 1. 尝试 Gemini
-  if (key && !key.startsWith('deepseek:')) {
-    try {
-      const reply = await callGemini(userMessage, key);
-      return { text: reply };
-    } catch (e) {
-      console.warn('Gemini failed, falling back:', e);
-    }
-  }
-
-  // 2. 尝试 DeepSeek
+  // 1. 优先 DeepSeek（不需要翻墙）
   if (key?.startsWith('deepseek:')) {
     try {
       const reply = await callDeepSeek(userMessage, key.slice(9));
       return { text: reply };
     } catch (e) {
       console.warn('DeepSeek failed, falling back:', e);
+    }
+  }
+
+  // 2. 备选 Gemini
+  if (key && !key.startsWith('deepseek:')) {
+    try {
+      const reply = await callGemini(userMessage, key);
+      return { text: reply };
+    } catch (e) {
+      console.warn('Gemini failed, falling back:', e);
     }
   }
 
@@ -122,4 +130,5 @@ export async function sendChat(userMessage: string): Promise<ChatResponse> {
 
 export function resetChat(): void {
   history = [];
+  dsHistory = [];
 }
