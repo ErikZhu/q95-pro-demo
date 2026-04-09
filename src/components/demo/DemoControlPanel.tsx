@@ -65,7 +65,7 @@ const S = {
   closeBtn: { background: 'none', border: 'none', color: 'rgba(255, 255, 255, 0.4)', fontSize: 18, cursor: 'pointer', padding: '2px 6px', borderRadius: 4, lineHeight: 1 } as React.CSSProperties,
   body: { flex: 1, overflowY: 'auto' as const, padding: '8px 10px', display: 'flex', flexDirection: 'column' as const, gap: 10 } as React.CSSProperties,
   section: { background: 'rgba(255, 255, 255, 0.02)', borderRadius: 8, padding: '8px 10px', display: 'flex', flexDirection: 'column' as const, gap: 6, border: '1px solid rgba(110, 54, 238, 0.04)' } as React.CSSProperties,
-  sectionLabel: { fontSize: 10, fontWeight: 700, color: 'rgba(110, 54, 238, 0.4)', textTransform: 'uppercase' as const, letterSpacing: 1.2, marginBottom: 2, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
+  sectionLabel: { fontSize: 10, fontWeight: 700, color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase' as const, letterSpacing: 1.2, marginBottom: 2, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
   row: { display: 'flex', flexWrap: 'wrap' as const, gap: 4 } as React.CSSProperties,
   btn: (active: boolean): React.CSSProperties => ({
     padding: '5px 10px', fontSize: 11, borderRadius: 6,
