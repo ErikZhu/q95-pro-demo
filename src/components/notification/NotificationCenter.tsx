@@ -631,7 +631,7 @@ export function NotificationCenterView({
                 style={{
                   ...S.closeBtn,
                   background: internalGroupByApp
-                    ? 'rgba(80, 160, 255, 0.2)'
+                    ? 'rgba(110, 54, 238, 0.2)'
                     : 'rgba(255,255,255,0.1)',
                 }}
                 onClick={toggleGroupByApp}

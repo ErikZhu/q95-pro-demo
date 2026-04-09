@@ -5,13 +5,13 @@
   --hud-bg: #0a0a1a;
   --hud-surface: rgba(10, 15, 30, 0.85);
   --hud-surface-hover: rgba(20, 30, 50, 0.9);
-  --hud-border: rgba(100, 200, 255, 0.12);
-  --hud-border-hover: rgba(100, 200, 255, 0.3);
+  --hud-border: rgba(110, 54, 238, 0.12);
+  --hud-border-hover: rgba(110, 54, 238, 0.3);
   --hud-text-primary: rgba(255, 255, 255, 0.92);
   --hud-text-secondary: rgba(255, 255, 255, 0.6);
   --hud-text-tertiary: rgba(255, 255, 255, 0.35);
-  --hud-accent: rgba(100, 200, 255, 0.9);
-  --hud-accent-glow: rgba(100, 200, 255, 0.15);
+  --hud-accent: rgba(110, 54, 238, 0.9);
+  --hud-accent-glow: rgba(110, 54, 238, 0.15);
   --hud-purple: rgba(180, 130, 255, 0.85);
   --hud-amber: rgba(255, 180, 60, 0.9);
   --hud-success: rgba(80, 220, 160, 0.9);
@@ -19,9 +19,9 @@
   --hud-warning: rgba(255, 200, 60, 0.9);
 
   /* ── Shadows & Glow ── */
-  --shadow-subtle: 0 0 8px rgba(100, 200, 255, 0.06);
-  --shadow-medium: 0 0 16px rgba(100, 200, 255, 0.1);
-  --shadow-strong: 0 0 24px rgba(100, 200, 255, 0.15);
+  --shadow-subtle: 0 0 8px rgba(110, 54, 238, 0.06);
+  --shadow-medium: 0 0 16px rgba(110, 54, 238, 0.1);
+  --shadow-strong: 0 0 24px rgba(110, 54, 238, 0.15);
   --shadow-panel: 0 4px 24px rgba(0, 0, 0, 0.5);
 
   /* ── Typography ── */
@@ -92,15 +92,15 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 200, 255, 0.15);
+  background: rgba(110, 54, 238, 0.15);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 200, 255, 0.25);
+  background: rgba(110, 54, 238, 0.25);
 }
 
 /* ── Selection ── */
 ::selection {
-  background: rgba(100, 200, 255, 0.25);
+  background: rgba(110, 54, 238, 0.25);
   color: #fff;
 }

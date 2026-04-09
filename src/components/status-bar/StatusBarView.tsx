@@ -23,10 +23,10 @@ export interface StatusBarViewProps {
 
 /** 电量颜色：绿色(正常)、橙色(<20%)、红色(<5%) — 需求 4.2 */
 function getBatteryColor(level: number, isCharging: boolean): string {
-  if (isCharging) return '#4FC3F7';
+  if (isCharging) return '#9B6EF3';
   if (level < 5) return '#FF5252';
   if (level < 20) return '#FFA726';
-  return '#66BB6A';
+  return '#8B5CF6';
 }
 
 /** 电量图标 — 需求 4.1, 4.2 */
@@ -197,16 +197,16 @@ export function StatusBarView({ status, isExpanded, onToggleExpand }: StatusBarV
       >
         {/* Wi-Fi — 需求 4.1, 4.4 */}
         <div style={S.iconGroup} data-testid="wifi-indicator">
-          <span style={S.statusIcon(wifi.connected ? '#4FC3F7' : '#FF5252')} aria-label={wifi.connected ? 'Wi-Fi 已连接' : 'Wi-Fi 未连接'}>
-            <Icon name={wifi.connected ? 'wifi' : 'wifi-off'} size={12} color={wifi.connected ? '#4FC3F7' : '#FF5252'} />
+          <span style={S.statusIcon(wifi.connected ? '#9B6EF3' : '#FF5252')} aria-label={wifi.connected ? 'Wi-Fi 已连接' : 'Wi-Fi 未连接'}>
+            <Icon name={wifi.connected ? 'wifi' : 'wifi-off'} size={12} color={wifi.connected ? '#9B6EF3' : '#FF5252'} />
           </span>
           <div style={S.connDot(wifi.connected)} />
         </div>
 
         {/* Bluetooth — 需求 4.1, 4.4 */}
         <div style={S.iconGroup} data-testid="bluetooth-indicator">
-          <span style={S.statusIcon(bluetooth.connected ? '#42A5F5' : '#FF5252')} aria-label={bluetooth.connected ? '蓝牙已连接' : '蓝牙未连接'}>
-            <Icon name={bluetooth.connected ? 'bluetooth' : 'bluetooth-off'} size={12} color={bluetooth.connected ? '#42A5F5' : '#FF5252'} />
+          <span style={S.statusIcon(bluetooth.connected ? '#8B5CF6' : '#FF5252')} aria-label={bluetooth.connected ? '蓝牙已连接' : '蓝牙未连接'}>
+            <Icon name={bluetooth.connected ? 'bluetooth' : 'bluetooth-off'} size={12} color={bluetooth.connected ? '#8B5CF6' : '#FF5252'} />
           </span>
           <div style={S.connDot(bluetooth.connected)} />
         </div>
