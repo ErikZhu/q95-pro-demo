@@ -12,12 +12,13 @@ export interface AIStatusOrbProps {
   onGazeEnd?: () => void;
 }
 
-/* Status differentiation via CSS filter + animation on the same GIF */
+/* Status differentiation via CSS filter + animation on the same GIF
+ * 所有状态基于 GIF 原色做微调，避免色相跳跃过大 */
 const STATUS_STYLE: Record<AIStatus, { filter: string; anim: string }> = {
-  idle:       { filter: 'none',                                          anim: '' },
-  listening:  { filter: 'hue-rotate(260deg) saturate(1.2) brightness(1.15)', anim: 'orb-breathe 1.8s ease-in-out infinite' },
-  thinking:   { filter: 'hue-rotate(280deg) saturate(1.4) brightness(0.85)', anim: 'orb-think 1.2s ease-in-out infinite' },
-  responding: { filter: 'hue-rotate(240deg) saturate(1.3) brightness(1.25)', anim: 'orb-respond 0.8s ease-in-out infinite' },
+  idle:       { filter: 'none',                                                    anim: '' },
+  listening:  { filter: 'saturate(1.15) brightness(1.1)',                          anim: 'orb-breathe 1.8s ease-in-out infinite' },
+  thinking:   { filter: 'saturate(0.8) brightness(0.9) hue-rotate(10deg)',         anim: 'orb-think 1.2s ease-in-out infinite' },
+  responding: { filter: 'saturate(1.3) brightness(1.15) hue-rotate(-10deg)',       anim: 'orb-respond 0.8s ease-in-out infinite' },
 };
 
 const KF = `

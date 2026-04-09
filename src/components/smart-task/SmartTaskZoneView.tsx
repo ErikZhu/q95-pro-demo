@@ -158,6 +158,20 @@ const S = {
     letterSpacing: 1,
   },
 
+  greetingTitle: {
+    fontSize: 12,
+    fontWeight: 600 as const,
+    color: 'rgba(255, 255, 255, 0.85)',
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+
+  greetingSub: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.4)',
+    letterSpacing: 0.3,
+  },
+
   carouselDots: {
     display: 'flex',
     gap: 3,
@@ -337,6 +351,17 @@ function injectBlinkKeyframes() {
   blinkInjected = true;
 }
 
+/* ── Idle 祝福语池 ── */
+const GREETINGS = [
+  '万事如意', '心想事成', '一帆风顺', '吉祥如意',
+  '平安喜乐', '前程似锦', '步步高升', '好运连连',
+  '事事顺心', '福星高照', '鹏程万里', '锦绣前程',
+  '春风得意', '如虎添翼', '蒸蒸日上', '大展宏图',
+];
+function pickGreeting(): string {
+  return GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
+}
+
 /* ── Default action buttons for expanded mode ── */
 const DEFAULT_ACTIONS = [
   { id: 'voice_reply', label: '语音回复' },
@@ -366,6 +391,9 @@ export function SmartTaskZoneView({
 }: SmartTaskZoneViewProps) {
   // Inject blink keyframes once
   useMemo(() => injectBlinkKeyframes(), []);
+
+  // 每次挂载随机选一条祝福语
+  const [greeting] = useState(() => pickGreeting());
 
   const carouselIndex = useCarousel(tasks.length, carouselIntervalMs);
 
@@ -420,7 +448,13 @@ export function SmartTaskZoneView({
               </div>
             )}
 
-            {/* Phase 4: idle — 无文字，Orb 静默存在 */}
+            {/* Phase 4: idle — 祝福语 + 待命提示 */}
+            {aiStatus === 'idle' && (
+              <div>
+                <div style={S.greetingTitle}>{greeting}</div>
+                <div style={S.greetingSub}>小Q随时等候主人的吩咐</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
