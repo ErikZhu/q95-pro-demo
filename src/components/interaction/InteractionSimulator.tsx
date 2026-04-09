@@ -25,13 +25,13 @@ function makeEvent(source: InputSource, type: string, data: Record<string, unkno
 
 const S = {
   root: { fontFamily: 'system-ui, -apple-system, sans-serif', color: 'rgba(255, 255, 255, 0.92)', fontSize: 12, display: 'flex', flexDirection: 'column' as const, gap: 12, padding: 10, userSelect: 'none' as const, maxWidth: 260 },
-  group: { background: 'rgba(255, 255, 255, 0.02)', borderRadius: 8, padding: '8px 10px', display: 'flex', flexDirection: 'column' as const, gap: 6, border: '1px solid rgba(100, 200, 255, 0.04)' },
-  groupLabel: { fontSize: 10, fontWeight: 700, color: 'rgba(100, 200, 255, 0.4)', textTransform: 'uppercase' as const, letterSpacing: 1.2, marginBottom: 2 },
+  group: { background: 'rgba(255, 255, 255, 0.02)', borderRadius: 8, padding: '8px 10px', display: 'flex', flexDirection: 'column' as const, gap: 6, border: '1px solid rgba(110, 54, 238, 0.04)' },
+  groupLabel: { fontSize: 10, fontWeight: 700, color: 'rgba(110, 54, 238, 0.4)', textTransform: 'uppercase' as const, letterSpacing: 1.2, marginBottom: 2 },
   row: { display: 'flex', flexWrap: 'wrap' as const, gap: 4 },
-  btn: { padding: '4px 8px', fontSize: 11, borderRadius: 6, border: '1px solid rgba(100, 200, 255, 0.08)', background: 'rgba(255, 255, 255, 0.03)', color: 'rgba(255, 255, 255, 0.75)', cursor: 'pointer', whiteSpace: 'nowrap' as const, lineHeight: 1.4, transition: 'background 0.15s, border-color 0.15s' },
+  btn: { padding: '4px 8px', fontSize: 11, borderRadius: 6, border: '1px solid rgba(110, 54, 238, 0.08)', background: 'rgba(255, 255, 255, 0.03)', color: 'rgba(255, 255, 255, 0.75)', cursor: 'pointer', whiteSpace: 'nowrap' as const, lineHeight: 1.4, transition: 'background 0.15s, border-color 0.15s' },
   inputRow: { display: 'flex', gap: 4 },
-  textInput: { flex: 1, padding: '4px 6px', fontSize: 11, borderRadius: 6, border: '1px solid rgba(100, 200, 255, 0.08)', background: 'rgba(255, 255, 255, 0.03)', color: 'rgba(255, 255, 255, 0.92)', outline: 'none', transition: 'border-color 0.15s' },
-  trackArea: { width: '100%', height: 60, borderRadius: 8, border: '1px solid rgba(100, 200, 255, 0.08)', background: 'rgba(255, 255, 255, 0.02)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'rgba(255, 255, 255, 0.25)', cursor: 'crosshair', position: 'relative' as const },
+  textInput: { flex: 1, padding: '4px 6px', fontSize: 11, borderRadius: 6, border: '1px solid rgba(110, 54, 238, 0.08)', background: 'rgba(255, 255, 255, 0.03)', color: 'rgba(255, 255, 255, 0.92)', outline: 'none', transition: 'border-color 0.15s' },
+  trackArea: { width: '100%', height: 60, borderRadius: 8, border: '1px solid rgba(110, 54, 238, 0.08)', background: 'rgba(255, 255, 255, 0.02)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'rgba(255, 255, 255, 0.25)', cursor: 'crosshair', position: 'relative' as const },
 };
 
 export function InteractionSimulator({ onInput }: InteractionSimulatorProps) {

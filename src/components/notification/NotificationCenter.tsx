@@ -84,15 +84,15 @@ const S = {
     alignItems: 'center',
     gap: 10,
     zIndex: 2000,
-    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(100, 200, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
+    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(110, 54, 238, 0.06)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
     animation: 'nc-slide-in 0.25s cubic-bezier(0, 0, 0.2, 1)',
   },
 
   toastIcon: {
     fontSize: 18,
     flexShrink: 0,
-    filter: 'drop-shadow(0 0 4px rgba(100, 200, 255, 0.3))',
+    filter: 'drop-shadow(0 0 4px rgba(110, 54, 238, 0.3))',
   },
 
   toastContent: {
@@ -102,7 +102,7 @@ const S = {
 
   toastApp: {
     fontSize: 10,
-    color: 'rgba(100, 200, 255, 0.6)',
+    color: 'rgba(110, 54, 238, 0.6)',
     marginBottom: 2,
     letterSpacing: 0.3,
   },
@@ -149,8 +149,8 @@ const S = {
     display: 'flex',
     flexDirection: 'column' as const,
     zIndex: 1600,
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(100, 200, 255, 0.04)',
-    border: '1px solid rgba(100, 200, 255, 0.08)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(110, 54, 238, 0.04)',
+    border: '1px solid rgba(110, 54, 238, 0.08)',
     borderTop: 'none',
     animation: 'nc-slide-down 0.25s cubic-bezier(0, 0, 0.2, 1)',
   },
@@ -160,7 +160,7 @@ const S = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '12px 16px',
-    borderBottom: '1px solid rgba(100, 200, 255, 0.06)',
+    borderBottom: '1px solid rgba(110, 54, 238, 0.06)',
   },
 
   listTitle: {
@@ -181,7 +181,7 @@ const S = {
 
   closeBtn: {
     background: 'rgba(255, 255, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
     color: 'rgba(255, 255, 255, 0.6)',
     borderRadius: 8,
     padding: '4px 10px',
@@ -198,7 +198,7 @@ const S = {
 
   groupHeader: {
     fontSize: 10,
-    color: 'rgba(100, 200, 255, 0.5)',
+    color: 'rgba(110, 54, 238, 0.5)',
     textTransform: 'uppercase' as const,
     letterSpacing: 1,
     padding: '8px 16px 4px',
@@ -211,8 +211,8 @@ const S = {
     gap: 10,
     padding: '10px 16px',
     cursor: 'pointer',
-    background: isRead ? 'transparent' : 'rgba(100, 200, 255, 0.03)',
-    borderBottom: '1px solid rgba(100, 200, 255, 0.04)',
+    background: isRead ? 'transparent' : 'rgba(110, 54, 238, 0.03)',
+    borderBottom: '1px solid rgba(110, 54, 238, 0.04)',
     transition: 'background 0.15s',
   }),
 
@@ -220,8 +220,8 @@ const S = {
     width: 5,
     height: 5,
     borderRadius: '50%',
-    background: 'rgba(100, 200, 255, 0.9)',
-    boxShadow: '0 0 6px rgba(100, 200, 255, 0.3)',
+    background: 'rgba(110, 54, 238, 0.9)',
+    boxShadow: '0 0 6px rgba(110, 54, 238, 0.3)',
     flexShrink: 0,
     marginTop: 6,
   },
@@ -240,7 +240,7 @@ const S = {
 
   itemAppName: {
     fontSize: 10,
-    color: 'rgba(100, 200, 255, 0.5)',
+    color: 'rgba(110, 54, 238, 0.5)',
     letterSpacing: 0.3,
   },
 
@@ -300,8 +300,8 @@ const S = {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: 12,
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(100, 200, 255, 0.04)',
-    border: '1px solid rgba(100, 200, 255, 0.1)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(110, 54, 238, 0.04)',
+    border: '1px solid rgba(110, 54, 238, 0.1)',
     animation: 'nc-fade-in 0.2s cubic-bezier(0, 0, 0.2, 1)',
   },
 
@@ -314,7 +314,7 @@ const S = {
 
   detailAppName: {
     fontSize: 11,
-    color: 'rgba(100, 200, 255, 0.6)',
+    color: 'rgba(110, 54, 238, 0.6)',
     marginBottom: 4,
     letterSpacing: 0.3,
   },
@@ -336,7 +336,7 @@ const S = {
     fontSize: 13,
     lineHeight: 1.6,
     color: 'rgba(255, 255, 255, 0.75)',
-    borderTop: '1px solid rgba(100, 200, 255, 0.06)',
+    borderTop: '1px solid rgba(110, 54, 238, 0.06)',
     paddingTop: 12,
   },
 
@@ -344,14 +344,14 @@ const S = {
     display: 'flex',
     gap: 8,
     flexWrap: 'wrap' as const,
-    borderTop: '1px solid rgba(100, 200, 255, 0.06)',
+    borderTop: '1px solid rgba(110, 54, 238, 0.06)',
     paddingTop: 12,
   },
 
   actionBtn: {
-    background: 'rgba(100, 200, 255, 0.1)',
-    border: '1px solid rgba(100, 200, 255, 0.2)',
-    color: 'rgba(100, 200, 255, 0.95)',
+    background: 'rgba(110, 54, 238, 0.1)',
+    border: '1px solid rgba(110, 54, 238, 0.2)',
+    color: 'rgba(110, 54, 238, 0.95)',
     borderRadius: 8,
     padding: '6px 14px',
     fontSize: 12,
@@ -364,7 +364,7 @@ const S = {
 
   markReadBtn: {
     background: 'rgba(255, 255, 255, 0.04)',
-    border: '1px solid rgba(100, 200, 255, 0.1)',
+    border: '1px solid rgba(110, 54, 238, 0.1)',
     color: 'rgba(255, 255, 255, 0.6)',
     borderRadius: 8,
     padding: '6px 14px',

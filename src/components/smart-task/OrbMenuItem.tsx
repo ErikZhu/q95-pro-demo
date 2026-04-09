@@ -81,13 +81,13 @@ export function OrbMenuItem({
     alignItems: 'center',
     justifyContent: 'center',
     background: isFocused
-      ? 'rgba(100, 200, 255, 0.2)'
+      ? 'rgba(110, 54, 238, 0.2)'
       : 'rgba(255, 255, 255, 0.08)',
     border: isFocused
-      ? '1.5px solid rgba(100, 200, 255, 0.7)'
+      ? '1.5px solid rgba(110, 54, 238, 0.7)'
       : '1px solid rgba(255, 255, 255, 0.12)',
     boxShadow: isFocused
-      ? '0 0 12px rgba(100, 200, 255, 0.5), 0 0 24px rgba(100, 200, 255, 0.2)'
+      ? '0 0 12px rgba(110, 54, 238, 0.5), 0 0 24px rgba(110, 54, 238, 0.2)'
       : 'none',
     transition: `transform 200ms ease, box-shadow 200ms ease, border 200ms ease, background 200ms ease`,
     transform: isFocused ? 'scale(1.15)' : 'scale(1)',
@@ -96,7 +96,7 @@ export function OrbMenuItem({
   /* ── 标签样式 ── */
   const labelStyle: React.CSSProperties = {
     fontSize: 9,
-    color: isFocused ? 'rgba(100, 200, 255, 1)' : 'rgba(255, 255, 255, 0.7)',
+    color: isFocused ? 'rgba(110, 54, 238, 1)' : 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
     whiteSpace: 'nowrap',
     lineHeight: 1.2,
@@ -108,8 +108,8 @@ export function OrbMenuItem({
     width: ACTIVE_DOT_SIZE,
     height: ACTIVE_DOT_SIZE,
     borderRadius: '50%',
-    background: 'rgba(100, 200, 255, 0.9)',
-    boxShadow: '0 0 4px rgba(100, 200, 255, 0.6)',
+    background: 'rgba(110, 54, 238, 0.9)',
+    boxShadow: '0 0 4px rgba(110, 54, 238, 0.6)',
   };
 
   return (
@@ -124,7 +124,7 @@ export function OrbMenuItem({
         <Icon
           name={item.icon}
           size={ICON_SIZE}
-          color={isFocused ? 'rgba(100, 200, 255, 1)' : 'rgba(255, 255, 255, 0.8)'}
+          color={isFocused ? 'rgba(110, 54, 238, 1)' : 'rgba(255, 255, 255, 0.8)'}
         />
       </div>
       <span data-testid={`orb-menu-item-label-${item.id}`} style={labelStyle}>

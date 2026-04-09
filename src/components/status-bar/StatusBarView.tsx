@@ -90,8 +90,8 @@ const S = {
     width: 4,
     height: 4,
     borderRadius: '50%',
-    background: connected ? 'rgba(80, 220, 160, 0.9)' : 'rgba(255, 90, 90, 0.9)',
-    boxShadow: connected ? '0 0 6px rgba(80, 220, 160, 0.4)' : '0 0 6px rgba(255, 90, 90, 0.4)',
+    background: connected ? 'rgba(140, 80, 255, 0.9)' : 'rgba(255, 90, 90, 0.9)',
+    boxShadow: connected ? '0 0 6px rgba(140, 80, 255, 0.4)' : '0 0 6px rgba(255, 90, 90, 0.4)',
     flexShrink: 0,
   }),
 
@@ -119,8 +119,8 @@ const S = {
     flexDirection: 'column' as const,
     gap: 8,
     zIndex: 1000,
-    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(100, 200, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
+    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(110, 54, 238, 0.06)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
     animation: 'fadeIn 0.15s cubic-bezier(0, 0, 0.2, 1)',
   },
 
@@ -147,7 +147,7 @@ const S = {
 
   divider: {
     height: 1,
-    background: 'rgba(100, 200, 255, 0.06)',
+    background: 'rgba(110, 54, 238, 0.06)',
   },
 };
 

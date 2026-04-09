@@ -19,7 +19,7 @@ export interface CalendarCardProps {
 const S = {
   root: { display: 'flex', flexDirection: 'column' as const, gap: 6 },
   title: { fontSize: 13, fontWeight: 600 as const },
-  timeRow: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'rgba(100, 200, 255, 0.8)' },
+  timeRow: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'rgba(110, 54, 238, 0.8)' },
   location: { fontSize: 11, color: 'rgba(255, 255, 255, 0.4)' },
 };
 

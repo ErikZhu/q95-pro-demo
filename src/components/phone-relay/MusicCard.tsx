@@ -32,11 +32,11 @@ const S = {
   trackName: { fontSize: 13, fontWeight: 600 as const, whiteSpace: 'nowrap' as const, overflow: 'hidden' as const, textOverflow: 'ellipsis' as const },
   artist: { fontSize: 11, color: 'rgba(255, 255, 255, 0.4)' },
   progressBar: { height: 3, borderRadius: 2, background: 'rgba(255, 255, 255, 0.06)', overflow: 'hidden' as const },
-  progressFill: (pct: number): React.CSSProperties => ({ height: '100%', width: `${Math.min(100, Math.max(0, pct))}%`, background: 'linear-gradient(90deg, rgba(100, 200, 255, 0.8), rgba(180, 130, 255, 0.8))', borderRadius: 2 }),
+  progressFill: (pct: number): React.CSSProperties => ({ height: '100%', width: `${Math.min(100, Math.max(0, pct))}%`, background: 'linear-gradient(90deg, rgba(110, 54, 238, 0.8), rgba(180, 130, 255, 0.8))', borderRadius: 2 }),
   timeRow: { display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'rgba(255, 255, 255, 0.3)', fontFamily: "'SF Mono', 'Fira Code', monospace" },
   controls: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16 },
   controlBtn: { background: 'none', border: 'none', color: 'rgba(255, 255, 255, 0.7)', fontSize: 16, cursor: 'pointer', padding: '2px 6px', transition: 'color 0.15s' },
-  playBtn: { background: 'rgba(100, 200, 255, 0.1)', border: 'none', color: 'rgba(100, 200, 255, 0.95)', fontSize: 18, cursor: 'pointer', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 8px rgba(100, 200, 255, 0.1)' },
+  playBtn: { background: 'rgba(110, 54, 238, 0.1)', border: 'none', color: 'rgba(110, 54, 238, 0.95)', fontSize: 18, cursor: 'pointer', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 8px rgba(110, 54, 238, 0.1)' },
 };
 
 export function MusicCardView({ card, data, onTogglePlay, onNext, onPrev }: MusicCardProps) {

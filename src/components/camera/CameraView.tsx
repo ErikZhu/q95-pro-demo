@@ -65,7 +65,7 @@ const S = {
   storageInfo: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'rgba(255, 255, 255, 0.5)' },
   storageLow: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'rgba(255, 180, 60, 0.9)' },
   viewfinder: { flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' as const },
-  crosshair: { width: 200, height: 200, border: '1px solid rgba(100, 200, 255, 0.15)', borderRadius: 8, boxShadow: '0 0 16px rgba(100, 200, 255, 0.04)' },
+  crosshair: { width: 200, height: 200, border: '1px solid rgba(110, 54, 238, 0.15)', borderRadius: 8, boxShadow: '0 0 16px rgba(110, 54, 238, 0.04)' },
   bottomBar: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 32, padding: '20px 16px 32px' },
   captureBtn: {
     width: 64, height: 64, borderRadius: '50%',
@@ -81,7 +81,7 @@ const S = {
   },
   recordDot: { width: 24, height: 24, borderRadius: '50%', background: 'rgba(255, 90, 90, 0.9)' },
   recordStop: { width: 20, height: 20, borderRadius: 4, background: 'rgba(255, 90, 90, 0.9)' },
-  syncBadge: { fontSize: 11, color: 'rgba(100, 200, 255, 0.7)', display: 'flex', alignItems: 'center', gap: 4 },
+  syncBadge: { fontSize: 11, color: 'rgba(110, 54, 238, 0.7)', display: 'flex', alignItems: 'center', gap: 4 },
   lowStorageWarning: {
     background: 'rgba(255, 180, 60, 0.08)', border: '1px solid rgba(255, 180, 60, 0.2)',
     borderRadius: 8, padding: '6px 12px', margin: '0 16px 8px',

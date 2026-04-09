@@ -83,7 +83,7 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
   const hint = orbMenuState === 'orb_hint' ? (
     <div data-testid="orb-hint-glow" style={{
       position: 'absolute', inset: -5, borderRadius: '50%',
-      border: '1.5px solid rgba(0,180,255,0.4)',
+      border: '1.5px solid rgba(110,54,238,0.4)',
       animation: 'orb-hint-pulse 1.5s ease-in-out infinite',
       pointerEvents: 'none',
     }} />
@@ -93,7 +93,7 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
   const menuRing = orbMenuState === 'orb_menu_open' ? (
     <div data-testid="orb-menu-ring" style={{
       position: 'absolute', inset: 0, borderRadius: '50%',
-      border: '1.5px solid rgba(0,180,255,0.4)',
+      border: '1.5px solid rgba(110,54,238,0.4)',
       animation: 'orb-ripple-out 1.6s ease-out infinite',
       pointerEvents: 'none',
     }} />
@@ -105,7 +105,7 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
     <div data-testid="orb-active-arc" style={{
       position: 'absolute', inset: -2, borderRadius: '50%',
       border: '1.5px solid transparent',
-      borderRightColor: 'rgba(0,180,255,0.35)',
+      borderRightColor: 'rgba(110,54,238,0.35)',
       pointerEvents: 'none',
     }} />
   ) : null;

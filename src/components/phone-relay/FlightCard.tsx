@@ -26,11 +26,11 @@ const STATUS_LABELS: Record<string, { text: string; color: string }> = {
 const S = {
   root: { display: 'flex', flexDirection: 'column' as const, gap: 6 },
   headerRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11 },
-  flightNo: { fontWeight: 600 as const, fontSize: 12, color: 'rgba(100, 200, 255, 0.9)' },
+  flightNo: { fontWeight: 600 as const, fontSize: 12, color: 'rgba(110, 54, 238, 0.9)' },
   routeRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
   city: { fontSize: 14, fontWeight: 600 as const, textAlign: 'center' as const },
   time: { fontSize: 11, color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' as const, fontFamily: "'SF Mono', 'Fira Code', monospace" },
-  arrow: { fontSize: 14, color: 'rgba(100, 200, 255, 0.3)' },
+  arrow: { fontSize: 14, color: 'rgba(110, 54, 238, 0.3)' },
   gate: { fontSize: 11, color: 'rgba(255, 180, 60, 0.9)' },
 };
 

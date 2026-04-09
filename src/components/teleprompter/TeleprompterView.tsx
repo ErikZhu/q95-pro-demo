@@ -32,21 +32,21 @@ export interface TeleprompterViewProps {
 
 const S = {
   container: { position: 'fixed' as const, top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column' as const, fontFamily: 'system-ui, -apple-system, sans-serif', color: 'rgba(255, 255, 255, 0.92)', zIndex: 1400 },
-  topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderBottom: '1px solid rgba(100, 200, 255, 0.06)' },
+  topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderBottom: '1px solid rgba(110, 54, 238, 0.06)' },
   title: { fontSize: 15, fontWeight: 600, color: 'rgba(255, 255, 255, 0.92)' },
-  phoneBadge: { fontSize: 11, color: 'rgba(80, 220, 160, 0.9)', background: 'rgba(80, 220, 160, 0.08)', borderRadius: 10, padding: '2px 8px', display: 'flex', alignItems: 'center', gap: 4, border: '1px solid rgba(80, 220, 160, 0.15)' },
+  phoneBadge: { fontSize: 11, color: 'rgba(140, 80, 255, 0.9)', background: 'rgba(140, 80, 255, 0.08)', borderRadius: 10, padding: '2px 8px', display: 'flex', alignItems: 'center', gap: 4, border: '1px solid rgba(140, 80, 255, 0.15)' },
   phoneDisconnected: { fontSize: 11, color: 'rgba(255, 180, 60, 0.9)', background: 'rgba(255, 180, 60, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(255, 180, 60, 0.15)' },
   textArea: { flex: 1, overflow: 'hidden', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   textContent: { lineHeight: 1.8, whiteSpace: 'pre-wrap' as const, maxWidth: 720, textAlign: 'center' as const },
   noText: { flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: 'rgba(255, 255, 255, 0.25)' },
-  controlBar: { padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderTop: '1px solid rgba(100, 200, 255, 0.06)', display: 'flex', flexDirection: 'column' as const, gap: 10 },
+  controlBar: { padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderTop: '1px solid rgba(110, 54, 238, 0.06)', display: 'flex', flexDirection: 'column' as const, gap: 10 },
   controlRow: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 },
-  playBtn: { width: 44, height: 44, borderRadius: '50%', background: 'rgba(100, 200, 255, 0.08)', border: '1px solid rgba(100, 200, 255, 0.3)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, color: 'rgba(100, 200, 255, 0.95)', transition: 'background 0.15s, box-shadow 0.15s', boxShadow: '0 0 12px rgba(100, 200, 255, 0.06)' },
+  playBtn: { width: 44, height: 44, borderRadius: '50%', background: 'rgba(110, 54, 238, 0.08)', border: '1px solid rgba(110, 54, 238, 0.3)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, color: 'rgba(110, 54, 238, 0.95)', transition: 'background 0.15s, box-shadow 0.15s', boxShadow: '0 0 12px rgba(110, 54, 238, 0.06)' },
   stopBtn: { width: 36, height: 36, borderRadius: '50%', background: 'rgba(255, 90, 90, 0.06)', border: '1px solid rgba(255, 90, 90, 0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: 'rgba(255, 90, 90, 0.9)', transition: 'background 0.15s' },
   sliderRow: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(255, 255, 255, 0.4)' },
-  slider: { flex: 1, height: 4, cursor: 'pointer', accentColor: 'rgba(100, 200, 255, 0.8)' },
+  slider: { flex: 1, height: 4, cursor: 'pointer', accentColor: 'rgba(110, 54, 238, 0.8)' },
   sliderLabel: { minWidth: 60, textAlign: 'right' as const, fontSize: 11, color: 'rgba(255, 255, 255, 0.35)' },
-  sliderValue: { minWidth: 36, fontSize: 12, color: 'rgba(100, 200, 255, 0.7)', fontWeight: 500, fontFamily: "'SF Mono', 'Fira Code', monospace" },
+  sliderValue: { minWidth: 36, fontSize: 12, color: 'rgba(110, 54, 238, 0.7)', fontWeight: 500, fontFamily: "'SF Mono', 'Fira Code', monospace" },
   statusIndicator: { fontSize: 12, padding: '4px 10px', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 4 },
 };
 
@@ -55,9 +55,9 @@ function getStatusStyle(status: string) {
     case 'playing':
       return {
         ...S.statusIndicator,
-        background: 'rgba(80, 220, 160, 0.08)',
-        color: 'rgba(80, 220, 160, 0.9)',
-        border: '1px solid rgba(80, 220, 160, 0.15)',
+        background: 'rgba(140, 80, 255, 0.08)',
+        color: 'rgba(140, 80, 255, 0.9)',
+        border: '1px solid rgba(140, 80, 255, 0.15)',
       };
     case 'paused':
       return {

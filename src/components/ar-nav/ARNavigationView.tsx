@@ -70,7 +70,7 @@ function formatRemainingTime(timestamp: number): string {
 
 /** GPS 信号状态配置 */
 const GPS_CONFIG: Record<string, { label: string; color: string }> = {
-  strong: { label: 'GPS 信号良好', color: 'rgba(80, 220, 160, 0.9)' },
+  strong: { label: 'GPS 信号良好', color: 'rgba(140, 80, 255, 0.9)' },
   weak: { label: 'GPS 信号弱', color: 'rgba(255, 200, 60, 0.9)' },
   lost: { label: 'GPS 信号丢失', color: 'rgba(255, 80, 80, 0.9)' },
 };
@@ -92,8 +92,8 @@ const S = {
     flexDirection: 'column' as const,
     gap: 10,
     zIndex: 1500,
-    boxShadow: '0 6px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(100, 200, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.1)',
+    boxShadow: '0 6px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(110, 54, 238, 0.06)',
+    border: '1px solid rgba(110, 54, 238, 0.1)',
     fontFamily: 'system-ui, -apple-system, sans-serif',
     color: 'rgba(255, 255, 255, 0.92)',
   },
@@ -104,7 +104,7 @@ const S = {
   },
   modeLabel: {
     fontSize: 11,
-    color: 'rgba(100, 200, 255, 0.6)',
+    color: 'rgba(110, 54, 238, 0.6)',
     textTransform: 'uppercase' as const,
     letterSpacing: 1.2,
     fontWeight: 600,
@@ -127,8 +127,8 @@ const S = {
   arrow: {
     fontSize: 36,
     lineHeight: 1,
-    color: 'rgba(100, 200, 255, 0.95)',
-    filter: 'drop-shadow(0 0 8px rgba(100, 200, 255, 0.3))',
+    color: 'rgba(110, 54, 238, 0.95)',
+    filter: 'drop-shadow(0 0 8px rgba(110, 54, 238, 0.3))',
   },
   turnInfo: {
     display: 'flex',
@@ -146,13 +146,13 @@ const S = {
   },
   streetName: {
     fontSize: 12,
-    color: 'rgba(100, 200, 255, 0.6)',
+    color: 'rgba(110, 54, 238, 0.6)',
   },
   statsRow: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTop: '1px solid rgba(100, 200, 255, 0.06)',
+    borderTop: '1px solid rgba(110, 54, 238, 0.06)',
     paddingTop: 8,
   },
   stat: {

@@ -26,12 +26,12 @@ const STATUS_LABELS: Record<string, string> = {
 const S = {
   root: { display: 'flex', flexDirection: 'column' as const, gap: 8 },
   statusRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12 },
-  statusLabel: { color: 'rgba(80, 220, 160, 0.95)', fontWeight: 600 as const },
+  statusLabel: { color: 'rgba(140, 80, 255, 0.95)', fontWeight: 600 as const },
   eta: { color: 'rgba(255, 255, 255, 0.5)', fontSize: 11, fontFamily: "'SF Mono', 'Fira Code', monospace" },
   progressBar: { height: 3, borderRadius: 2, background: 'rgba(255, 255, 255, 0.06)', overflow: 'hidden' as const },
   progressFill: (pct: number): React.CSSProperties => ({
     height: '100%', width: `${Math.min(100, Math.max(0, pct))}%`,
-    background: 'linear-gradient(90deg, rgba(100, 200, 255, 0.8), rgba(80, 220, 160, 0.8))', borderRadius: 2, transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    background: 'linear-gradient(90deg, rgba(110, 54, 238, 0.8), rgba(140, 80, 255, 0.8))', borderRadius: 2, transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   }),
   rider: { fontSize: 11, color: 'rgba(255, 255, 255, 0.4)' },
 };

@@ -50,31 +50,31 @@ function formatTime(timestamp: number): string {
 
 const S = {
   container: { position: 'fixed' as const, top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(15, 25, 45, 0.96), rgba(10, 10, 26, 0.98))', display: 'flex', flexDirection: 'column' as const, fontFamily: 'system-ui, -apple-system, sans-serif', color: 'rgba(255, 255, 255, 0.92)', zIndex: 1400 },
-  topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderBottom: '1px solid rgba(100, 200, 255, 0.06)' },
+  topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderBottom: '1px solid rgba(110, 54, 238, 0.06)' },
   title: { fontSize: 15, fontWeight: 600, color: 'rgba(255, 255, 255, 0.92)' },
-  btBadge: { fontSize: 11, color: 'rgba(80, 220, 160, 0.9)', background: 'rgba(80, 220, 160, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(80, 220, 160, 0.15)' },
+  btBadge: { fontSize: 11, color: 'rgba(140, 80, 255, 0.9)', background: 'rgba(140, 80, 255, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(140, 80, 255, 0.15)' },
   btWarning: { fontSize: 11, color: 'rgba(255, 90, 90, 0.9)', background: 'rgba(255, 90, 90, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(255, 90, 90, 0.15)' },
   content: { flex: 1, display: 'flex', flexDirection: 'column' as const, gap: 12, padding: '16px', overflowY: 'auto' as const },
   warningBanner: { width: '100%', background: 'rgba(255, 90, 90, 0.08)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255, 90, 90, 0.2)', fontSize: 13, color: 'rgba(255, 90, 90, 0.95)' },
-  callOverlay: { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24, background: 'rgba(100, 200, 255, 0.04)', borderRadius: 16, border: '1px solid rgba(100, 200, 255, 0.1)' },
+  callOverlay: { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24, background: 'rgba(110, 54, 238, 0.04)', borderRadius: 16, border: '1px solid rgba(110, 54, 238, 0.1)' },
   callerName: { fontSize: 22, fontWeight: 700, color: 'rgba(255, 255, 255, 0.95)' },
   callerNumber: { fontSize: 14, color: 'rgba(255, 255, 255, 0.4)', fontFamily: "'SF Mono', 'Fira Code', monospace" },
-  callDuration: { fontSize: 18, fontWeight: 600, fontFamily: "'SF Mono', 'Fira Code', monospace", fontVariantNumeric: 'tabular-nums' as const, color: 'rgba(100, 200, 255, 0.95)' },
+  callDuration: { fontSize: 18, fontWeight: 600, fontFamily: "'SF Mono', 'Fira Code', monospace", fontVariantNumeric: 'tabular-nums' as const, color: 'rgba(110, 54, 238, 0.95)' },
   callActions: { display: 'flex', gap: 16, marginTop: 8 },
   callBtn: { padding: '10px 24px', borderRadius: 24, border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'background 0.15s' },
-  acceptBtn: { background: 'rgba(80, 220, 160, 0.1)', color: 'rgba(80, 220, 160, 0.95)', border: '1px solid rgba(80, 220, 160, 0.3)' },
+  acceptBtn: { background: 'rgba(140, 80, 255, 0.1)', color: 'rgba(140, 80, 255, 0.95)', border: '1px solid rgba(140, 80, 255, 0.3)' },
   rejectBtn: { background: 'rgba(255, 90, 90, 0.1)', color: 'rgba(255, 90, 90, 0.95)', border: '1px solid rgba(255, 90, 90, 0.3)' },
   endBtn: { background: 'rgba(255, 90, 90, 0.1)', color: 'rgba(255, 90, 90, 0.95)', border: '1px solid rgba(255, 90, 90, 0.3)' },
   toggleBtn: { padding: '8px 16px', borderRadius: 20, cursor: 'pointer', fontSize: 12, fontWeight: 500, transition: 'background 0.15s, border-color 0.15s' },
-  toggleOn: { background: 'rgba(100, 200, 255, 0.08)', color: 'rgba(100, 200, 255, 0.95)', border: '1px solid rgba(100, 200, 255, 0.2)' },
+  toggleOn: { background: 'rgba(110, 54, 238, 0.08)', color: 'rgba(110, 54, 238, 0.95)', border: '1px solid rgba(110, 54, 238, 0.2)' },
   toggleOff: { background: 'rgba(255, 255, 255, 0.03)', color: 'rgba(255, 255, 255, 0.35)', border: '1px solid rgba(255, 255, 255, 0.06)' },
-  msgCard: { display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 0', borderBottom: '1px solid rgba(100, 200, 255, 0.04)' },
-  msgUnread: { borderLeft: '2px solid rgba(100, 200, 255, 0.5)', paddingLeft: 10 },
+  msgCard: { display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 0', borderBottom: '1px solid rgba(110, 54, 238, 0.04)' },
+  msgUnread: { borderLeft: '2px solid rgba(110, 54, 238, 0.5)', paddingLeft: 10 },
   msgSender: { fontSize: 13, fontWeight: 600, color: 'rgba(255, 255, 255, 0.92)' },
   msgSummary: { fontSize: 12, color: 'rgba(255, 255, 255, 0.45)', marginTop: 2 },
   msgTime: { fontSize: 11, color: 'rgba(255, 255, 255, 0.3)', marginLeft: 'auto', flexShrink: 0, fontFamily: "'SF Mono', 'Fira Code', monospace" },
   msgActions: { display: 'flex', gap: 6, marginTop: 4 },
-  smallBtn: { fontSize: 11, color: 'rgba(100, 200, 255, 0.7)', background: 'rgba(100, 200, 255, 0.06)', border: '1px solid rgba(100, 200, 255, 0.12)', borderRadius: 6, padding: '2px 8px', cursor: 'pointer', transition: 'background 0.15s' },
+  smallBtn: { fontSize: 11, color: 'rgba(110, 54, 238, 0.7)', background: 'rgba(110, 54, 238, 0.06)', border: '1px solid rgba(110, 54, 238, 0.12)', borderRadius: 6, padding: '2px 8px', cursor: 'pointer', transition: 'background 0.15s' },
   emptyHint: { textAlign: 'center' as const, color: 'rgba(255, 255, 255, 0.25)', fontSize: 13, padding: 32 },
   hwLabel: { fontSize: 11, color: 'rgba(255, 255, 255, 0.3)', textAlign: 'center' as const, marginTop: 4 },
 };
@@ -132,7 +132,7 @@ export function MessagingView({
         {showCallUI && (
           <div style={S.callOverlay} data-testid="call-overlay">
             {isRinging && (
-              <div style={{ fontSize: 13, color: 'rgba(100, 200, 255, 0.8)' }}>
+              <div style={{ fontSize: 13, color: 'rgba(110, 54, 238, 0.8)' }}>
                 <Icon name="phone" size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />来电
               </div>
             )}

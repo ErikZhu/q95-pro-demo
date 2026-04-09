@@ -17,7 +17,7 @@ export interface WechatCardProps {
 
 const S = {
   root: { display: 'flex', alignItems: 'flex-start', gap: 10 },
-  avatar: { width: 32, height: 32, borderRadius: 6, background: 'rgba(80, 220, 160, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0, overflow: 'hidden' as const, border: '1px solid rgba(80, 220, 160, 0.15)' },
+  avatar: { width: 32, height: 32, borderRadius: 6, background: 'rgba(140, 80, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0, overflow: 'hidden' as const, border: '1px solid rgba(140, 80, 255, 0.15)' },
   avatarImg: { width: '100%', height: '100%', objectFit: 'cover' as const, borderRadius: 6 },
   content: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' as const, gap: 3 },
   senderName: { fontSize: 13, fontWeight: 600 as const },

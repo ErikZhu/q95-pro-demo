@@ -185,7 +185,7 @@ const S = {
   canvas: {
     position: 'absolute' as const, inset: 0,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    background: 'radial-gradient(ellipse at 50% 40%, rgba(100, 200, 255, 0.02) 0%, transparent 70%)',
+    background: 'radial-gradient(ellipse at 50% 40%, rgba(110, 54, 238, 0.02) 0%, transparent 70%)',
     borderRadius: 4, zIndex: 0,
   } as React.CSSProperties,
 
@@ -208,11 +208,11 @@ const S = {
   drawerTrigger: (expanded: boolean): React.CSSProperties => ({
     width: 24, height: 24, borderRadius: 6,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    background: expanded ? 'rgba(100, 200, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
-    border: `1px solid ${expanded ? 'rgba(100, 200, 255, 0.4)' : 'rgba(100, 200, 255, 0.12)'}`,
+    background: expanded ? 'rgba(110, 54, 238, 0.15)' : 'rgba(255, 255, 255, 0.06)',
+    border: `1px solid ${expanded ? 'rgba(110, 54, 238, 0.4)' : 'rgba(110, 54, 238, 0.12)'}`,
     cursor: 'pointer',
     transition: 'background 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
-    boxShadow: expanded ? '0 0 12px rgba(100, 200, 255, 0.1)' : 'none',
+    boxShadow: expanded ? '0 0 12px rgba(110, 54, 238, 0.1)' : 'none',
   }),
 
   drawerIcon: { fontSize: 14, color: 'rgba(255, 255, 255, 0.75)' } as React.CSSProperties,
@@ -222,8 +222,8 @@ const S = {
     display: 'grid', gridTemplateColumns: 'repeat(3, 56px)', gap: 4,
     padding: 8, borderRadius: 12,
     background: 'rgba(10, 15, 30, 0.92)', backdropFilter: 'blur(16px)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
-    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(100, 200, 255, 0.06)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
+    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(110, 54, 238, 0.06)',
     zIndex: 30,
     animation: 'fadeIn 0.15s cubic-bezier(0, 0, 0.2, 1)',
   } as React.CSSProperties,
@@ -231,14 +231,14 @@ const S = {
   appBtn: (isActive: boolean, isDisabled: boolean): React.CSSProperties => ({
     display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4,
     padding: 6, borderRadius: 8, border: '1px solid transparent',
-    background: isActive ? 'rgba(100, 200, 255, 0.15)' : 'rgba(255, 255, 255, 0.04)',
+    background: isActive ? 'rgba(110, 54, 238, 0.15)' : 'rgba(255, 255, 255, 0.04)',
     cursor: isDisabled ? 'not-allowed' : 'pointer',
     opacity: isDisabled ? 0.4 : 1,
     transition: 'background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s',
     color: 'rgba(255, 255, 255, 0.92)', fontFamily: 'inherit', outline: 'none',
   }),
 
-  appIcon: { fontSize: 20, lineHeight: 1, filter: 'drop-shadow(0 0 4px rgba(100, 200, 255, 0.15))' } as React.CSSProperties,
+  appIcon: { fontSize: 20, lineHeight: 1, filter: 'drop-shadow(0 0 4px rgba(110, 54, 238, 0.15))' } as React.CSSProperties,
   appLabel: { fontSize: 8, color: 'rgba(255, 255, 255, 0.6)', whiteSpace: 'nowrap' as const } as React.CSSProperties,
 
   loadingOverlay: {
@@ -247,7 +247,7 @@ const S = {
     background: 'rgba(10, 10, 26, 0.6)', backdropFilter: 'blur(8px)', borderRadius: 8, zIndex: 40,
   } as React.CSSProperties,
 
-  loadingText: { fontSize: 11, color: 'rgba(100, 200, 255, 0.8)', letterSpacing: 0.3 } as React.CSSProperties,
+  loadingText: { fontSize: 11, color: 'rgba(110, 54, 238, 0.8)', letterSpacing: 0.3 } as React.CSSProperties,
 
   errorBanner: {
     position: 'absolute' as const, bottom: 8, left: '50%', transform: 'translateX(-50%)',

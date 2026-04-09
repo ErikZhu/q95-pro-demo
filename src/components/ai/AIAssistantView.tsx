@@ -96,8 +96,8 @@ const S = {
     flexDirection: 'column' as const,
     gap: 12,
     zIndex: 2000,
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(100, 200, 255, 0.04)',
-    border: '1px solid rgba(100, 200, 255, 0.1)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(110, 54, 238, 0.04)',
+    border: '1px solid rgba(110, 54, 238, 0.1)',
     fontFamily: 'system-ui, -apple-system, sans-serif',
     color: 'rgba(255, 255, 255, 0.92)',
     animation: 'ai-view-fade-in 0.25s cubic-bezier(0, 0, 0.2, 1)',
@@ -119,12 +119,12 @@ const S = {
   statusLabel: {
     fontSize: 13,
     fontWeight: 500,
-    color: 'rgba(100, 200, 255, 0.9)',
+    color: 'rgba(110, 54, 238, 0.9)',
   },
 
   closeBtn: {
     background: 'rgba(255, 255, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
     color: 'rgba(255, 255, 255, 0.6)',
     borderRadius: 8,
     padding: '4px 12px',
@@ -146,7 +146,7 @@ const S = {
     width: 3,
     height: 4,
     borderRadius: 2,
-    background: 'rgba(80, 220, 160, 0.8)',
+    background: 'rgba(140, 80, 255, 0.8)',
     animation: `ai-view-wave 0.8s ease-in-out ${index * 0.07}s infinite`,
   }),
 
@@ -173,10 +173,10 @@ const S = {
     lineHeight: 1.5,
     maxWidth: '85%',
     alignSelf: isUser ? 'flex-end' : 'flex-start',
-    background: isUser ? 'rgba(100, 200, 255, 0.12)' : 'rgba(255, 255, 255, 0.04)',
+    background: isUser ? 'rgba(110, 54, 238, 0.12)' : 'rgba(255, 255, 255, 0.04)',
     borderBottomRightRadius: isUser ? 3 : 12,
     borderBottomLeftRadius: isUser ? 12 : 3,
-    border: `1px solid ${isUser ? 'rgba(100, 200, 255, 0.1)' : 'rgba(255, 255, 255, 0.04)'}`,
+    border: `1px solid ${isUser ? 'rgba(110, 54, 238, 0.1)' : 'rgba(255, 255, 255, 0.04)'}`,
   }),
 
   confirmBadge: {
@@ -208,7 +208,7 @@ const S = {
   textInput: {
     flex: 1,
     background: 'rgba(255, 255, 255, 0.04)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
     borderRadius: 10,
     padding: '8px 12px',
     fontSize: 13,
@@ -218,9 +218,9 @@ const S = {
   },
 
   sendBtn: {
-    background: 'rgba(100, 200, 255, 0.15)',
-    border: '1px solid rgba(100, 200, 255, 0.3)',
-    color: 'rgba(100, 200, 255, 0.95)',
+    background: 'rgba(110, 54, 238, 0.15)',
+    border: '1px solid rgba(110, 54, 238, 0.3)',
+    color: 'rgba(110, 54, 238, 0.95)',
     borderRadius: 10,
     padding: '8px 14px',
     fontSize: 13,
@@ -236,9 +236,9 @@ const S = {
   },
 
   confirmBtn: {
-    background: 'rgba(80, 220, 160, 0.12)',
-    border: '1px solid rgba(80, 220, 160, 0.3)',
-    color: 'rgba(80, 220, 160, 0.95)',
+    background: 'rgba(140, 80, 255, 0.12)',
+    border: '1px solid rgba(140, 80, 255, 0.3)',
+    color: 'rgba(140, 80, 255, 0.95)',
     borderRadius: 8,
     padding: '6px 16px',
     fontSize: 12,

@@ -53,27 +53,27 @@ function getExerciseLabel(type: string): string {
 
 const S = {
   container: { position: 'fixed' as const, top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(ellipse at 50% 80%, rgba(15, 30, 25, 0.96), rgba(10, 10, 26, 0.98))', display: 'flex', flexDirection: 'column' as const, fontFamily: 'system-ui, -apple-system, sans-serif', color: 'rgba(255, 255, 255, 0.92)', zIndex: 1400 },
-  topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderBottom: '1px solid rgba(100, 200, 255, 0.06)' },
+  topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderBottom: '1px solid rgba(110, 54, 238, 0.06)' },
   title: { fontSize: 15, fontWeight: 600, color: 'rgba(255, 255, 255, 0.92)' },
-  deviceBadge: { fontSize: 11, color: 'rgba(80, 220, 160, 0.9)', background: 'rgba(80, 220, 160, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(80, 220, 160, 0.15)' },
+  deviceBadge: { fontSize: 11, color: 'rgba(140, 80, 255, 0.9)', background: 'rgba(140, 80, 255, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(140, 80, 255, 0.15)' },
   deviceDisconnected: { fontSize: 11, color: 'rgba(255, 180, 60, 0.9)', background: 'rgba(255, 180, 60, 0.08)', borderRadius: 10, padding: '2px 8px', border: '1px solid rgba(255, 180, 60, 0.15)' },
   content: { flex: 1, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: 24, padding: '24px 16px' },
   statsGrid: { display: 'flex', gap: 16, flexWrap: 'wrap' as const, justifyContent: 'center' },
-  statCard: { background: 'rgba(255, 255, 255, 0.03)', borderRadius: 12, padding: '16px 20px', minWidth: 100, textAlign: 'center' as const, border: '1px solid rgba(100, 200, 255, 0.06)' },
+  statCard: { background: 'rgba(255, 255, 255, 0.03)', borderRadius: 12, padding: '16px 20px', minWidth: 100, textAlign: 'center' as const, border: '1px solid rgba(110, 54, 238, 0.06)' },
   statValue: { fontSize: 28, fontWeight: 700, fontFamily: "'SF Mono', 'Fira Code', monospace", fontVariantNumeric: 'tabular-nums' as const },
   statLabel: { fontSize: 12, color: 'rgba(255, 255, 255, 0.4)', marginTop: 4, letterSpacing: 0.3 },
-  workoutSection: { width: '100%', maxWidth: 320, background: 'rgba(100, 200, 255, 0.04)', borderRadius: 12, padding: 16, border: '1px solid rgba(100, 200, 255, 0.1)' },
-  workoutTitle: { fontSize: 14, fontWeight: 600, color: 'rgba(100, 200, 255, 0.9)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 },
+  workoutSection: { width: '100%', maxWidth: 320, background: 'rgba(110, 54, 238, 0.04)', borderRadius: 12, padding: 16, border: '1px solid rgba(110, 54, 238, 0.1)' },
+  workoutTitle: { fontSize: 14, fontWeight: 600, color: 'rgba(110, 54, 238, 0.9)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 },
   workoutStats: { display: 'flex', justifyContent: 'space-around', gap: 8 },
   workoutStat: { textAlign: 'center' as const },
   workoutStatValue: { fontSize: 20, fontWeight: 600, color: 'rgba(255, 255, 255, 0.95)', fontFamily: "'SF Mono', 'Fira Code', monospace", fontVariantNumeric: 'tabular-nums' as const },
   workoutStatLabel: { fontSize: 11, color: 'rgba(255, 255, 255, 0.35)', marginTop: 2 },
   alertBanner: { width: '100%', maxWidth: 320, background: 'rgba(255, 90, 90, 0.08)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255, 90, 90, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
   alertText: { fontSize: 13, color: 'rgba(255, 90, 90, 0.95)', flex: 1 },
-  clearBtn: { fontSize: 11, color: 'rgba(255, 255, 255, 0.45)', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(100, 200, 255, 0.1)', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', transition: 'background 0.15s' },
-  controlBar: { padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderTop: '1px solid rgba(100, 200, 255, 0.06)', display: 'flex', justifyContent: 'center' },
+  clearBtn: { fontSize: 11, color: 'rgba(255, 255, 255, 0.45)', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(110, 54, 238, 0.1)', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', transition: 'background 0.15s' },
+  controlBar: { padding: '12px 16px', background: 'rgba(10, 15, 30, 0.96)', borderTop: '1px solid rgba(110, 54, 238, 0.06)', display: 'flex', justifyContent: 'center' },
   workoutBtn: { padding: '10px 32px', borderRadius: 24, border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'background 0.15s, box-shadow 0.15s' },
-  startBtn: { background: 'rgba(80, 220, 160, 0.1)', color: 'rgba(80, 220, 160, 0.95)', border: '1px solid rgba(80, 220, 160, 0.3)' },
+  startBtn: { background: 'rgba(140, 80, 255, 0.1)', color: 'rgba(140, 80, 255, 0.95)', border: '1px solid rgba(140, 80, 255, 0.3)' },
   stopBtn: { background: 'rgba(255, 90, 90, 0.1)', color: 'rgba(255, 90, 90, 0.95)', border: '1px solid rgba(255, 90, 90, 0.3)' },
 };
 
@@ -146,7 +146,7 @@ export function HealthMonitorView({
         {/* Basic health stats — 需求 16.1 */}
         <div style={S.statsGrid} data-testid="health-stats">
           <div style={S.statCard} data-testid="stat-steps">
-            <div style={{ ...S.statValue, color: 'rgba(100, 200, 255, 0.95)' }}>
+            <div style={{ ...S.statValue, color: 'rgba(110, 54, 238, 0.95)' }}>
               {healthData.steps.toLocaleString()}
             </div>
             <div style={S.statLabel}>步数</div>

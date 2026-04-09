@@ -116,7 +116,7 @@ const S = {
 
   feedbackText: {
     fontSize: 11,
-    color: 'rgba(100, 200, 255, 0.8)',
+    color: 'rgba(110, 54, 238, 0.8)',
     fontStyle: 'italic' as const,
     marginTop: 2,
     whiteSpace: 'nowrap' as const,
@@ -134,9 +134,9 @@ const S = {
     width: 4,
     height: 4,
     borderRadius: '50%',
-    background: active ? 'rgba(100, 200, 255, 0.9)' : 'rgba(255, 255, 255, 0.2)',
+    background: active ? 'rgba(110, 54, 238, 0.9)' : 'rgba(255, 255, 255, 0.2)',
     transition: 'background 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-    boxShadow: active ? '0 0 6px rgba(100, 200, 255, 0.3)' : 'none',
+    boxShadow: active ? '0 0 6px rgba(110, 54, 238, 0.3)' : 'none',
   }),
 
   confirmPrompt: {
@@ -170,8 +170,8 @@ const S = {
     gap: 12,
     overflowY: 'auto' as const,
     zIndex: 1000,
-    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(100, 200, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.1)',
+    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(110, 54, 238, 0.06)',
+    border: '1px solid rgba(110, 54, 238, 0.1)',
   },
 
   overlayHeader: {
@@ -191,7 +191,7 @@ const S = {
 
   closeBtn: {
     background: 'rgba(255, 255, 255, 0.06)',
-    border: '1px solid rgba(100, 200, 255, 0.12)',
+    border: '1px solid rgba(110, 54, 238, 0.12)',
     color: 'rgba(255, 255, 255, 0.6)',
     borderRadius: 8,
     padding: '4px 10px',
@@ -201,13 +201,13 @@ const S = {
   },
 
   section: {
-    borderTop: '1px solid rgba(100, 200, 255, 0.06)',
+    borderTop: '1px solid rgba(110, 54, 238, 0.06)',
     paddingTop: 10,
   },
 
   sectionTitle: {
     fontSize: 10,
-    color: 'rgba(100, 200, 255, 0.5)',
+    color: 'rgba(110, 54, 238, 0.5)',
     textTransform: 'uppercase' as const,
     letterSpacing: 1.2,
     marginBottom: 6,
@@ -219,7 +219,7 @@ const S = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '8px 0',
-    borderBottom: '1px solid rgba(100, 200, 255, 0.04)',
+    borderBottom: '1px solid rgba(110, 54, 238, 0.04)',
     marginBottom: 0,
     fontSize: 12,
   },
@@ -230,7 +230,7 @@ const S = {
   },
 
   taskItemStatus: {
-    color: 'rgba(100, 200, 255, 0.7)',
+    color: 'rgba(110, 54, 238, 0.7)',
     fontSize: 11,
   },
 
@@ -241,10 +241,10 @@ const S = {
     lineHeight: 1.5,
     maxWidth: '85%',
     alignSelf: isUser ? 'flex-end' : 'flex-start',
-    background: isUser ? 'rgba(100, 200, 255, 0.15)' : 'rgba(255, 255, 255, 0.04)',
+    background: isUser ? 'rgba(110, 54, 238, 0.15)' : 'rgba(255, 255, 255, 0.04)',
     borderBottomRightRadius: isUser ? 2 : 10,
     borderBottomLeftRadius: isUser ? 10 : 2,
-    border: `1px solid ${isUser ? 'rgba(100, 200, 255, 0.12)' : 'rgba(255, 255, 255, 0.04)'}`,
+    border: `1px solid ${isUser ? 'rgba(110, 54, 238, 0.12)' : 'rgba(255, 255, 255, 0.04)'}`,
   }),
 
   chatContainer: {
@@ -262,9 +262,9 @@ const S = {
   },
 
   actionBtn: {
-    background: 'rgba(100, 200, 255, 0.1)',
-    border: '1px solid rgba(100, 200, 255, 0.2)',
-    color: 'rgba(100, 200, 255, 0.95)',
+    background: 'rgba(110, 54, 238, 0.1)',
+    border: '1px solid rgba(110, 54, 238, 0.2)',
+    color: 'rgba(110, 54, 238, 0.95)',
     borderRadius: 8,
     padding: '6px 14px',
     fontSize: 12,
