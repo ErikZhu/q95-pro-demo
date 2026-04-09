@@ -116,14 +116,14 @@ const S = {
 
   feedbackText: {
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: 'rgba(255, 255, 255, 0.92)',
     fontStyle: 'normal' as const,
     marginTop: 2,
     lineHeight: 1.4,
-    maxWidth: 200,
+    maxWidth: 320,
     overflow: 'hidden' as const,
     display: '-webkit-box' as const,
-    WebkitLineClamp: 2,
+    WebkitLineClamp: 3,
     WebkitBoxOrient: 'vertical' as const,
     animation: 'sensible-fade-in 0.3s ease-out',
   },
@@ -131,21 +131,31 @@ const S = {
   userInputText: {
     fontSize: 11,
     color: 'rgba(255, 255, 255, 0.55)',
-    fontStyle: 'normal' as const,
+    fontStyle: 'italic' as const,
     marginTop: 2,
-    whiteSpace: 'nowrap' as const,
+    maxWidth: 320,
     overflow: 'hidden' as const,
     textOverflow: 'ellipsis' as const,
-    maxWidth: 200,
+    display: '-webkit-box' as const,
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical' as const,
     animation: 'sensible-fade-in 0.3s ease-out',
   },
 
+  phaseLabel: {
+    fontSize: 9,
+    color: 'rgba(160, 120, 255, 0.7)',
+    fontWeight: 600 as const,
+    letterSpacing: 0.5,
+    marginBottom: 1,
+  },
+
   thinkingDots: {
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.4)',
+    fontSize: 11,
+    color: 'rgba(160, 120, 255, 0.6)',
+    fontStyle: 'italic' as const,
     marginTop: 2,
-    letterSpacing: 2,
-    animation: 'sensible-dots 1.2s ease-in-out infinite',
+    letterSpacing: 1,
   },
 
   carouselDots: {
@@ -382,22 +392,31 @@ export function SmartTaskZoneView({
           <div style={{ flex: 1, minWidth: 0 }}>
             {/* Phase 1: 用户输入确认 — L2 字幕 */}
             {aiStatus === 'listening' && aiFeedbackText && (
-              <div style={S.userInputText} data-testid="ai-user-input">
-                {aiFeedbackText}
+              <div>
+                <div style={S.phaseLabel}>正在聆听...</div>
+                <div style={S.userInputText} data-testid="ai-user-input">
+                  {aiFeedbackText}
+                </div>
               </div>
             )}
 
-            {/* Phase 2: 思考中 — L1 仅 Orb + 微弱点动画 */}
+            {/* Phase 2: 思考中 — L1 仅 Orb + 微弱提示 */}
             {aiStatus === 'thinking' && (
-              <div style={S.thinkingDots} data-testid="ai-thinking">
-                ···
+              <div>
+                <div style={S.phaseLabel}>思考中</div>
+                <div style={S.thinkingDots} data-testid="ai-thinking">
+                  正在思考...
+                </div>
               </div>
             )}
 
             {/* Phase 3: AI 回复 — L2 字幕流 */}
             {aiStatus === 'responding' && aiFeedbackText && (
-              <div style={S.feedbackText} data-testid="ai-feedback-text">
-                {aiFeedbackText}
+              <div>
+                <div style={S.phaseLabel}>小Q</div>
+                <div style={S.feedbackText} data-testid="ai-feedback-text">
+                  {aiFeedbackText}
+                </div>
               </div>
             )}
 

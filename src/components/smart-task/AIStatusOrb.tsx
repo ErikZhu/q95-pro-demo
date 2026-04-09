@@ -15,9 +15,9 @@ export interface AIStatusOrbProps {
 /* Status differentiation via CSS filter + animation on the same GIF */
 const STATUS_STYLE: Record<AIStatus, { filter: string; anim: string }> = {
   idle:       { filter: 'none',                                          anim: '' },
-  listening:  { filter: 'hue-rotate(80deg) saturate(1.4) brightness(1.2)', anim: 'orb-breathe 1.8s ease-in-out infinite' },
-  thinking:   { filter: 'hue-rotate(220deg) saturate(1.3) brightness(0.9)', anim: 'orb-think 1.2s ease-in-out infinite' },
-  responding: { filter: 'hue-rotate(300deg) saturate(1.5) brightness(1.3)', anim: 'orb-respond 0.8s ease-in-out infinite' },
+  listening:  { filter: 'hue-rotate(260deg) saturate(1.2) brightness(1.15)', anim: 'orb-breathe 1.8s ease-in-out infinite' },
+  thinking:   { filter: 'hue-rotate(280deg) saturate(1.4) brightness(0.85)', anim: 'orb-think 1.2s ease-in-out infinite' },
+  responding: { filter: 'hue-rotate(240deg) saturate(1.3) brightness(1.25)', anim: 'orb-respond 0.8s ease-in-out infinite' },
 };
 
 const KF = `
