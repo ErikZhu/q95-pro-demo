@@ -123,8 +123,9 @@ export default function App() {
 
   const launchApp = useCallback(async (id: string) => { setActiveView(id); }, []);
 
-  /** 意图路由：根据语音内容判断是否需要切换场景 */
-  const routeIntent = useCallback((text: string): boolean => {
+  /** 意图路由：根据语音内容判断是否需要切换场景
+   *  返回值: 'none' | 'routed' | 'poi-search' */
+  const routeIntent = useCallback((text: string): string => {
     const t = text.toLowerCase();
 
     // 音乐场景：播放/音乐/歌/周杰伦等关键词
@@ -148,26 +149,32 @@ export default function App() {
         pauseReason: null,
       });
       setActiveView('music');
-      return true;
+      return 'routed';
     }
 
     // 导航场景：检测"导航去+地点"模式
     if (t.includes('导航') || t.includes('怎么走') || t.includes('路线') || t.includes('navigate')) {
-      // 提取目的地关键词
-      const destMatch = text.match(/导航[去到](.+?)(?:$|[，。,.])/);
-      const dest = destMatch ? destMatch[1].trim() : '';
+      // 提取目的地关键词（支持"导航去xxx"、"导航到xxx"、"帮我导航去xxx"）
+      const destMatch = text.match(/导航[去到](.+)/);
+      const dest = destMatch ? destMatch[1].replace(/[，。,.!！？?]/g, '').trim() : '';
+
+      // 也支持直接包含地点关键词的情况（如"帮我导航 最近的药店"）
+      const hasDest = dest.length > 0;
+      const fullText = text;
 
       // 如果有明确目的地 → 显示 POI 搜索结果
-      if (dest && (dest.includes('药店') || dest.includes('药房'))) {
-        setNavPoiQuery(dest);
+      if ((hasDest && (dest.includes('药店') || dest.includes('药房'))) ||
+          (!hasDest && (fullText.includes('药店') || fullText.includes('药房')))) {
+        const label = hasDest ? dest : '药店';
+        setNavPoiQuery(label);
         setNavPoiResults([
           { id: 'poi-1', name: '益丰大药房（科技园店）', status: '营业中', distance: '126 米', duration: '步行 2 分钟' },
           { id: 'poi-2', name: '海王星辰健康药房（高新南店）', status: '营业中', distance: '358 米', duration: '步行 5 分钟' },
           { id: 'poi-3', name: '国大药房（科兴科学园店）', status: '即将打烊', distance: '1.2 公里', duration: '骑行 6 分钟' },
         ]);
         setActiveView('nav-search');
-        return true;
-      } else if (dest) {
+        return 'poi-search';
+      } else if (hasDest) {
         // 其他目的地 → 通用 POI 结果
         setNavPoiQuery(dest);
         setNavPoiResults([
@@ -176,44 +183,44 @@ export default function App() {
           { id: 'poi-3', name: `${dest}（备选）`, status: '营业中', distance: '1.0 公里', duration: '骑行 5 分钟' },
         ]);
         setActiveView('nav-search');
-        return true;
+        return 'poi-search';
       }
 
       setActiveView('navigation');
-      return true;
+      return 'routed';
     }
 
     // 拍照场景
     if (t.includes('拍照') || t.includes('相机') || t.includes('照片') || t.includes('camera')) {
       setActiveView('camera');
-      return true;
+      return 'routed';
     }
 
     // 翻译场景
     if (t.includes('翻译') || t.includes('translate')) {
       setActiveView('translator');
-      return true;
+      return 'routed';
     }
 
     // 健康场景
     if (t.includes('心率') || t.includes('健康') || t.includes('血氧') || t.includes('步数')) {
       setActiveView('health');
-      return true;
+      return 'routed';
     }
 
     // 通知场景
     if (t.includes('通知') || t.includes('消息') || t.includes('未读')) {
       setActiveView('notifications');
-      return true;
+      return 'routed';
     }
 
     // 设置场景
     if (t.includes('设置') || t.includes('亮度') || t.includes('音量')) {
       setActiveView('settings');
-      return true;
+      return 'routed';
     }
 
-    return false; // 不匹配任何场景
+    return 'none'; // 不匹配任何场景
   }, []);
 
   const onInput = useCallback(async (e: InputEvent) => {
@@ -233,7 +240,15 @@ export default function App() {
       setAiConversation(prev => [...prev, { role: 'user', text: userText }]);
 
       // Phase 2: 意图路由 + 思考（L1 Orb 状态变化）— 0.3s
-      const routed = routeIntent(userText);
+      const routeResult = routeIntent(userText);
+
+      // POI 搜索结果场景 → 跳过 AI 对话，直接显示结果
+      if (routeResult === 'poi-search') {
+        setTimeout(() => { setAiStatus('idle'); setAiFeedbackText(''); }, 1500);
+        return;
+      }
+
+      const routed = routeResult === 'routed';
       await new Promise(r => setTimeout(r, 300));
       setAiStatus('thinking');
       setAiFeedbackText(''); // 思考时清空文字，只靠 Orb 传达状态
