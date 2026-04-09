@@ -185,6 +185,12 @@ export default function App() {
   }, []);
 
   const onInput = useCallback(async (e: InputEvent) => {
+    // 返回按钮 → 回到首页
+    if (e.type === 'back') {
+      setActiveView('home');
+      return;
+    }
+
     // 处理语音/文本输入 → 调用 AI 对话
     if (e.source === 'voice' && e.type === 'command' && e.data?.text) {
       const userText = String(e.data.text);
