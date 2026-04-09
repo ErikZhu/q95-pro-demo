@@ -7,6 +7,8 @@ import { SmartTaskZoneView } from './components/smart-task/SmartTaskZoneView';
 import { NotificationCenterView } from './components/notification/NotificationCenter';
 import { MusicPlayerView } from './components/music/MusicPlayerView';
 import { ARNavigationView } from './components/ar-nav/ARNavigationView';
+import { NavSearchResultsView } from './components/ar-nav/NavSearchResultsView';
+import type { POIResult } from './components/ar-nav/NavSearchResultsView';
 import { CameraView } from './components/camera/CameraView';
 import { AIAssistantView } from './components/ai/AIAssistantView';
 import { TranslatorView } from './components/translator/TranslatorView';
@@ -86,6 +88,10 @@ export default function App() {
   const [aiFeedbackText, setAiFeedbackText] = useState<string>('');
   const [aiConversation, setAiConversation] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([]);
 
+  // 导航 POI 搜索结果
+  const [navPoiResults, setNavPoiResults] = useState<POIResult[] | null>(null);
+  const [navPoiQuery, setNavPoiQuery] = useState('');
+
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
       {
@@ -145,8 +151,34 @@ export default function App() {
       return true;
     }
 
-    // 导航场景
+    // 导航场景：检测"导航去+地点"模式
     if (t.includes('导航') || t.includes('怎么走') || t.includes('路线') || t.includes('navigate')) {
+      // 提取目的地关键词
+      const destMatch = text.match(/导航[去到](.+?)(?:$|[，。,.])/);
+      const dest = destMatch ? destMatch[1].trim() : '';
+
+      // 如果有明确目的地 → 显示 POI 搜索结果
+      if (dest && (dest.includes('药店') || dest.includes('药房'))) {
+        setNavPoiQuery(dest);
+        setNavPoiResults([
+          { id: 'poi-1', name: '益丰大药房（科技园店）', status: '营业中', distance: '126 米', duration: '步行 2 分钟' },
+          { id: 'poi-2', name: '海王星辰健康药房（高新南店）', status: '营业中', distance: '358 米', duration: '步行 5 分钟' },
+          { id: 'poi-3', name: '国大药房（科兴科学园店）', status: '即将打烊', distance: '1.2 公里', duration: '骑行 6 分钟' },
+        ]);
+        setActiveView('nav-search');
+        return true;
+      } else if (dest) {
+        // 其他目的地 → 通用 POI 结果
+        setNavPoiQuery(dest);
+        setNavPoiResults([
+          { id: 'poi-1', name: `${dest}（附近推荐）`, status: '营业中', distance: '200 米', duration: '步行 3 分钟' },
+          { id: 'poi-2', name: `${dest}（次选）`, status: '营业中', distance: '500 米', duration: '步行 7 分钟' },
+          { id: 'poi-3', name: `${dest}（备选）`, status: '营业中', distance: '1.0 公里', duration: '骑行 5 分钟' },
+        ]);
+        setActiveView('nav-search');
+        return true;
+      }
+
       setActiveView('navigation');
       return true;
     }
@@ -230,6 +262,20 @@ export default function App() {
       case 'home': return <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
       case 'notifications': return <NotificationCenterView notifications={notifs} groupedNotifications={new Map()} mode="list" unreadCount={notifs.filter((n) => !n.isRead).length} />;
       case 'navigation': return <ARNavigationView navigationState={nav} route={route} />;
+      case 'nav-search': return navPoiResults ? (
+        <NavSearchResultsView
+          query={navPoiQuery}
+          results={navPoiResults}
+          onConfirm={(poi) => {
+            setNavPoiResults(null);
+            setAiFeedbackText(`正在导航到 ${poi.name.split('（')[0]}...`);
+            setAiStatus('responding');
+            setActiveView('navigation');
+            setTimeout(() => { setAiStatus('idle'); setAiFeedbackText(''); }, 4000);
+          }}
+          onDismiss={() => { setNavPoiResults(null); setActiveView('home'); }}
+        />
+      ) : <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
       case 'camera': return <CameraView recordingState={{ isRecording: false, duration: 0, startTime: null, resolution: { width: 1920, height: 1080 } }} storageInfo={{ total: 8192, used: 2048, remaining: 6144, isLow: false }} />;
       case 'music': return <MusicPlayerView playbackState={musicState} />;
       case 'ai': return <AIAssistantView status="idle" conversation={[]} />;
