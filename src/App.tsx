@@ -191,35 +191,35 @@ export default function App() {
       return;
     }
 
-    // 处理语音/文本输入 → 调用 AI 对话
+    // 处理语音/文本输入 → Sensible Response System
     if (e.source === 'voice' && e.type === 'command' && e.data?.text) {
       const userText = String(e.data.text);
 
-      // 1. 显示用户输入
+      // Phase 1: 用户输入确认（L1 → L2）— 0-0.3s
       setAiStatus('listening');
-      setAiFeedbackText(`🎤 "${userText}"`);
+      setAiFeedbackText(userText); // 纯文本，不加 emoji
       setAiConversation(prev => [...prev, { role: 'user', text: userText }]);
 
-      // 2. 意图路由：检查是否需要切换场景
+      // Phase 2: 意图路由 + 思考（L1 Orb 状态变化）— 0.3s
       const routed = routeIntent(userText);
+      await new Promise(r => setTimeout(r, 300));
+      setAiStatus('thinking');
+      setAiFeedbackText(''); // 思考时清空文字，只靠 Orb 传达状态
 
-      // 3. 切换到思考状态
-      setTimeout(() => setAiStatus('thinking'), 300);
-      setTimeout(() => setAiFeedbackText('🤔 正在思考...'), 300);
-
-      // 4. 调用 DeepSeek API
+      // Phase 3: 调用 AI — 0.3s-2s
       const response = await sendChat(userText);
 
-      // 5. 显示 AI 回复
+      // Phase 4: AI 回复（L2 字幕流）— 显示 5s
       setAiStatus('responding');
-      setAiFeedbackText(`💬 ${response.text}`);
+      setAiFeedbackText(response.text);
       setAiConversation(prev => [...prev, { role: 'assistant', text: response.text }]);
 
-      // 6. 如果路由了场景，反馈文字保留更久
+      // Phase 5: 时间衰减 — 回复后 5s 淡出
+      const fadeDelay = routed ? 4000 : 6000;
       setTimeout(() => {
         setAiStatus('idle');
         setAiFeedbackText('');
-      }, routed ? 5000 : 8000);
+      }, fadeDelay);
     }
   }, [routeIntent]);
 

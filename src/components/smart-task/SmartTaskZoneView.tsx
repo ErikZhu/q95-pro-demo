@@ -115,13 +115,37 @@ const S = {
   },
 
   feedbackText: {
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontStyle: 'normal' as const,
+    marginTop: 2,
+    lineHeight: 1.4,
+    maxWidth: 200,
+    overflow: 'hidden' as const,
+    display: '-webkit-box' as const,
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical' as const,
+    animation: 'sensible-fade-in 0.3s ease-out',
+  },
+
+  userInputText: {
     fontSize: 11,
-    color: 'rgba(110, 54, 238, 0.8)',
-    fontStyle: 'italic' as const,
+    color: 'rgba(255, 255, 255, 0.55)',
+    fontStyle: 'normal' as const,
     marginTop: 2,
     whiteSpace: 'nowrap' as const,
     overflow: 'hidden' as const,
     textOverflow: 'ellipsis' as const,
+    maxWidth: 200,
+    animation: 'sensible-fade-in 0.3s ease-out',
+  },
+
+  thinkingDots: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.4)',
+    marginTop: 2,
+    letterSpacing: 2,
+    animation: 'sensible-dots 1.2s ease-in-out infinite',
   },
 
   carouselDots: {
@@ -279,6 +303,19 @@ const BLINK_KEYFRAMES = `
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.5; }
 }
+@keyframes sensible-fade-in {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes sensible-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes sensible-dots {
+  0%, 20%  { content: '.'; }
+  40%      { content: '..'; }
+  60%, 100% { content: '...'; }
+}
 `;
 
 let blinkInjected = false;
@@ -329,10 +366,8 @@ export function SmartTaskZoneView({
     [onAction],
   );
 
-  /* ── Compact mode ── */
+  /* ── Compact mode — Sensible Response System ── */
   if (state === 'compact') {
-    const currentTask = tasks.length > 0 ? tasks[carouselIndex] : null;
-
     return (
       <div style={S.root} data-testid="smart-task-zone-view" data-state="compact">
         <div style={S.compact}>
@@ -345,35 +380,30 @@ export function SmartTaskZoneView({
             onGazeEnd={onOrbGazeEnd}
           />
           <div style={{ flex: 1, minWidth: 0 }}>
-            {currentTask ? (
-              <div style={S.taskText} data-testid="task-summary-text">
-                {currentTask.statusText}
-              </div>
-            ) : (
-              <div style={{ ...S.taskText, color: 'rgba(255,255,255,0.4)' }}>
-                暂无活跃任务
+            {/* Phase 1: 用户输入确认 — L2 字幕 */}
+            {aiStatus === 'listening' && aiFeedbackText && (
+              <div style={S.userInputText} data-testid="ai-user-input">
+                {aiFeedbackText}
               </div>
             )}
 
-            {/* AI 实时反馈 — 需求 3.3 */}
-            {aiFeedbackText && (
+            {/* Phase 2: 思考中 — L1 仅 Orb + 微弱点动画 */}
+            {aiStatus === 'thinking' && (
+              <div style={S.thinkingDots} data-testid="ai-thinking">
+                ···
+              </div>
+            )}
+
+            {/* Phase 3: AI 回复 — L2 字幕流 */}
+            {aiStatus === 'responding' && aiFeedbackText && (
               <div style={S.feedbackText} data-testid="ai-feedback-text">
                 {aiFeedbackText}
               </div>
             )}
 
-            {/* 多任务轮播指示器 — 需求 3.10 */}
-            {tasks.length > 1 && (
-              <div style={S.carouselDots} data-testid="carousel-dots">
-                {tasks.map((_, i) => (
-                  <div key={i} style={S.dot(i === carouselIndex)} />
-                ))}
-              </div>
-            )}
+            {/* Phase 4: idle — 无文字，Orb 静默存在 */}
           </div>
         </div>
-
-        {/* Orb Menu 已移至 App 层级渲染，确保全屏定位 */}
       </div>
     );
   }
