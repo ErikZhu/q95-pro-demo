@@ -10,6 +10,7 @@ export interface AIStatusOrbProps {
   activeAppId?: string | null;
   onGazeStart?: () => void;
   onGazeEnd?: () => void;
+  onClick?: () => void;
 }
 
 /* Status differentiation via CSS filter + animation on the same GIF
@@ -53,7 +54,7 @@ function injectCSS() {
   done = true;
 }
 
-export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGazeStart, onGazeEnd }: AIStatusOrbProps) {
+export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGazeStart, onGazeEnd, onClick }: AIStatusOrbProps) {
   useMemo(() => injectCSS(), []);
   const st = STATUS_STYLE[status];
 
@@ -117,9 +118,10 @@ export function AIStatusOrb({ status, size = 40, orbMenuState, activeAppId, onGa
       data-status={status}
       role="status"
       aria-label={`AI assistant status: ${status}`}
-      style={{ position: 'relative', display: 'inline-flex', width: size, height: size }}
+      style={{ position: 'relative', display: 'inline-flex', width: size, height: size, cursor: 'pointer' }}
       onPointerEnter={onGazeStart}
       onPointerLeave={onGazeEnd}
+      onClick={onClick}
     >
       <div style={container}>
         <img src={orbGif} alt="" style={img} />

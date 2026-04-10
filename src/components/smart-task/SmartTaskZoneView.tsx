@@ -62,6 +62,8 @@ export interface SmartTaskZoneViewProps {
   onOrbGazeStart?: () => void;
   /** 注视 Orb 结束回调 */
   onOrbGazeEnd?: () => void;
+  /** 点击 Orb 回调 */
+  onOrbClick?: () => void;
 }
 
 /** 轮播 hook：在多任务间自动切换 */
@@ -392,6 +394,7 @@ export function SmartTaskZoneView({
   onConfirmSelect: _onConfirmSelect,
   onOrbGazeStart,
   onOrbGazeEnd,
+  onOrbClick,
 }: SmartTaskZoneViewProps) {
   // Inject blink keyframes once
   useMemo(() => injectBlinkKeyframes(), []);
@@ -420,6 +423,7 @@ export function SmartTaskZoneView({
             activeAppId={activeAppId}
             onGazeStart={onOrbGazeStart}
             onGazeEnd={onOrbGazeEnd}
+            onClick={onOrbClick}
           />
           <div style={{ flex: 1, minWidth: 0 }}>
             {/* Phase 1: 用户输入确认 — L2 字幕 */}

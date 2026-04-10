@@ -20,7 +20,6 @@ export interface LauncherProps {
 export interface AppShortcut { id: string; icon: IconName; label: string; }
 
 export const APP_SHORTCUTS: AppShortcut[] = [
-  { id: 'notifications', icon: 'bell', label: '通知' },
   { id: 'ar_navigation', icon: 'compass', label: 'AR 导航' },
   { id: 'camera', icon: 'camera', label: '相机' },
   { id: 'music', icon: 'music', label: '音乐' },
@@ -57,7 +56,7 @@ function getBatteryColor(level: number, isCharging: boolean): string {
 }
 
 export function Launcher({ deviceStatus, onLaunchApp }: LauncherProps) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [launchStatus, setLaunchStatus] = useState<LaunchStatus>({ state: 'idle', appId: null, errorMessage: null, retryCount: 0 });
   const retryCountRef = useRef(0);
   const gazeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);

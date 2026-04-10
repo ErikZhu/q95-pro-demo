@@ -31,6 +31,7 @@ export interface OrbMenuItemProps {
   isActive: boolean;
   animationDelay: number;
   menuState: OrbMenuState;
+  onClick?: (item: OrbMenuItemData) => void;
 }
 
 /** 弹性缓动曲线 */
@@ -48,6 +49,7 @@ export function OrbMenuItem({
   isActive,
   animationDelay,
   menuState,
+  onClick,
 }: OrbMenuItemProps) {
   const isVisible = menuState === 'orb_menu_open' || menuState === 'orb_item_focused';
 
@@ -119,6 +121,7 @@ export function OrbMenuItem({
       data-active={isActive}
       data-menu-state={menuState}
       style={containerStyle}
+      onClick={() => onClick?.(item)}
     >
       <div data-testid={`orb-menu-item-icon-${item.id}`} style={iconContainerStyle}>
         <Icon

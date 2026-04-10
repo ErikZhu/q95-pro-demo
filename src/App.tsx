@@ -438,6 +438,7 @@ export default function App() {
             onConfirmSelect={(source) => orbMenuSM.send({ type: 'CONFIRM_SELECT', source })}
             onOrbGazeStart={() => orbMenuSM.send({ type: 'GAZE_ORB_START' })}
             onOrbGazeEnd={() => orbMenuSM.send({ type: 'GAZE_ORB_END' })}
+            onOrbClick={() => setOrbMenuState(prev => prev === 'orb_idle' ? 'orb_menu_open' : 'orb_idle')}
           />
         </div>
         <div className="status-bar-slot"><StatusBarView status={device} isExpanded={false} /></div>
@@ -462,6 +463,11 @@ export default function App() {
         onGazeItem={(itemId) => orbMenuSM.send({ type: 'GAZE_ITEM', itemId })}
         onGazeItemEnd={() => orbMenuSM.send({ type: 'GAZE_ITEM_END' })}
         onConfirmSelect={(source) => orbMenuSM.send({ type: 'CONFIRM_SELECT', source })}
+        onItemClick={(item) => {
+          setActiveView(item.id);
+          setActiveAppId(item.id);
+          setOrbMenuState('orb_idle');
+        }}
       />
     </div>
   );

@@ -25,6 +25,7 @@ export interface OrbMenuViewProps {
   onGazeItem?: (itemId: string) => void;
   onGazeItemEnd?: () => void;
   onConfirmSelect?: (source: 'nod' | 'emg_pinch' | 'side_touchpad') => void;
+  onItemClick?: (item: OrbMenuItemData) => void;
 }
 
 /** 菜单展开半径 */
@@ -40,6 +41,7 @@ export function OrbMenuView({
   focusedItemId,
   activeAppId,
   orbPosition,
+  onItemClick,
 }: OrbMenuViewProps) {
   const isVisible = menuState === 'orb_menu_open' || menuState === 'orb_item_focused';
 
@@ -102,6 +104,7 @@ export function OrbMenuView({
             isActive={item.id === activeAppId}
             animationDelay={animationDelay}
             menuState={menuState}
+            onClick={onItemClick}
           />
         );
       })}
