@@ -91,6 +91,7 @@ export default function App() {
   // 导航 POI 搜索结果
   const [navPoiResults, setNavPoiResults] = useState<POIResult[] | null>(null);
   const [navPoiQuery, setNavPoiQuery] = useState('');
+  const [navSelectedIdx, setNavSelectedIdx] = useState(-1);
 
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
@@ -122,6 +123,16 @@ export default function App() {
   });
 
   const launchApp = useCallback(async (id: string) => { setActiveView(id); }, []);
+
+  /** 确认 POI 选择 → 跳转导航详情 */
+  const confirmNavPoi = useCallback((poi: POIResult) => {
+    setNavPoiResults(null);
+    setNavSelectedIdx(-1);
+    setAiFeedbackText(`正在导航到 ${poi.name.split('（')[0]}...`);
+    setAiStatus('responding');
+    setActiveView('navigation');
+    setTimeout(() => { setAiStatus('idle'); setAiFeedbackText(''); }, 4000);
+  }, []);
 
   /** 意图路由：根据语音内容判断是否需要切换场景
    *  返回值: 'none' | 'routed' | 'poi-search' */
@@ -167,6 +178,7 @@ export default function App() {
           (!hasDest && (fullText.includes('药店') || fullText.includes('药房')))) {
         const label = hasDest ? dest : '药店';
         setNavPoiQuery(label);
+        setNavSelectedIdx(-1);
         setNavPoiResults([
           { id: 'poi-1', name: '益丰大药房（科技园店）', status: '营业中', distance: '126 米', duration: '步行 2 分钟' },
           { id: 'poi-2', name: '海王星辰健康药房（高新南店）', status: '营业中', distance: '358 米', duration: '步行 5 分钟' },
@@ -177,6 +189,7 @@ export default function App() {
       } else if (hasDest) {
         // 其他目的地 → 通用 POI 结果
         setNavPoiQuery(dest);
+        setNavSelectedIdx(-1);
         setNavPoiResults([
           { id: 'poi-1', name: `${dest}（附近推荐）`, status: '营业中', distance: '200 米', duration: '步行 3 分钟' },
           { id: 'poi-2', name: `${dest}（次选）`, status: '营业中', distance: '500 米', duration: '步行 7 分钟' },
@@ -227,7 +240,52 @@ export default function App() {
     // 返回按钮 → 回到首页
     if (e.type === 'back') {
       setActiveView('home');
+      setNavPoiResults(null);
+      setNavSelectedIdx(-1);
       return;
+    }
+
+    // ── nav-search 模式：手势控制 POI 列表 ──
+    if (navPoiResults && navPoiResults.length > 0) {
+      const count = navPoiResults.length;
+
+      // 上滑 → 选中上一项
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'up') {
+        setNavSelectedIdx(prev => prev <= 0 ? count - 1 : prev - 1);
+        return;
+      }
+      // 下滑 → 选中下一项
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'down') {
+        setNavSelectedIdx(prev => prev < 0 ? 0 : (prev + 1) % count);
+        return;
+      }
+      // 点击/确认 → 确认当前选中项
+      if ((e.source === 'side_touchpad' && e.type === 'tap') ||
+          (e.source === 'physical_button' && e.type === 'confirm')) {
+        if (navSelectedIdx >= 0 && navSelectedIdx < count) {
+          confirmNavPoi(navPoiResults[navSelectedIdx]);
+        }
+        return;
+      }
+
+      // 语音"第X个" → 直接选中并确认
+      if (e.source === 'voice' && e.type === 'command' && e.data?.text) {
+        const vt = String(e.data.text);
+        const numMap: Record<string, number> = {
+          '一': 0, '1': 0, '第一': 0, '第一个': 0, '第1个': 0,
+          '二': 1, '2': 1, '第二': 1, '第二个': 1, '第2个': 1,
+          '三': 2, '3': 2, '第三': 2, '第三个': 2, '第3个': 2,
+        };
+        for (const [key, idx] of Object.entries(numMap)) {
+          if (vt.includes(key) && idx < count) {
+            setNavSelectedIdx(idx);
+            // 短暂高亮后自动确认
+            setTimeout(() => confirmNavPoi(navPoiResults[idx]), 600);
+            return;
+          }
+        }
+        // 其他语音 → 不拦截，走正常流程
+      }
     }
 
     // 处理语音/文本输入 → Sensible Response System
@@ -268,7 +326,7 @@ export default function App() {
         setAiFeedbackText('');
       }, fadeDelay);
     }
-  }, [routeIntent]);
+  }, [routeIntent, navPoiResults, navSelectedIdx, confirmNavPoi]);
 
   const toggleDemo = useCallback(() => setShowDemo((p) => !p), []);
 
@@ -281,14 +339,10 @@ export default function App() {
         <NavSearchResultsView
           query={navPoiQuery}
           results={navPoiResults}
-          onConfirm={(poi) => {
-            setNavPoiResults(null);
-            setAiFeedbackText(`正在导航到 ${poi.name.split('（')[0]}...`);
-            setAiStatus('responding');
-            setActiveView('navigation');
-            setTimeout(() => { setAiStatus('idle'); setAiFeedbackText(''); }, 4000);
-          }}
-          onDismiss={() => { setNavPoiResults(null); setActiveView('home'); }}
+          selectedIndex={navSelectedIdx}
+          onSelect={(_poi, idx) => setNavSelectedIdx(idx)}
+          onConfirm={confirmNavPoi}
+          onDismiss={() => { setNavPoiResults(null); setNavSelectedIdx(-1); setActiveView('home'); }}
         />
       ) : <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
       case 'camera': return <CameraView recordingState={{ isRecording: false, duration: 0, startTime: null, resolution: { width: 1920, height: 1080 } }} storageInfo={{ total: 8192, used: 2048, remaining: 6144, isLow: false }} />;
