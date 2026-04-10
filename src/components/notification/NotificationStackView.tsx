@@ -209,34 +209,64 @@ const S = {
 
 export function NotificationStackView({
   items,
-  activeIndex: controlledIdx,
-  onIndexChange,
 }: NotificationStackViewProps) {
   useMemo(() => injectKf(), []);
-  const data = items.length > 0 ? items : DEMO_ITEMS;
-  const [localIdx, setLocalIdx] = useState(0);
-  const idx = Math.max(0, Math.min((controlledIdx ?? localIdx), data.length - 1));
+  const source = items.length > 0 ? items : DEMO_ITEMS;
 
-  useEffect(() => {
-    if (controlledIdx !== undefined && controlledIdx >= 0) setLocalIdx(controlledIdx);
-  }, [controlledIdx]);
+  // 维护卡片顺序（循环堆叠）
+  const [order, setOrder] = useState<number[]>(() => source.map((_, i) => i));
+  const [animatingOut, setAnimatingOut] = useState<number | null>(null);
 
-  const go = (dir: number) => {
-    const next = Math.max(0, Math.min(data.length - 1, idx + dir));
-    setLocalIdx(next);
-    onIndexChange?.(next);
+  // 下滑：顶部卡片飞到最后
+  const swipeNext = () => {
+    if (animatingOut !== null) return;
+    const topIdx = order[0];
+    setAnimatingOut(topIdx);
+    // 动画结束后移到最后
+    setTimeout(() => {
+      setOrder(prev => [...prev.slice(1), prev[0]]);
+      setAnimatingOut(null);
+    }, 400);
   };
+
+  // 上滑：最后一张飞到顶部
+  const swipePrev = () => {
+    if (animatingOut !== null) return;
+    setOrder(prev => [prev[prev.length - 1], ...prev.slice(0, -1)]);
+  };
+
+  // 暴露给外部控制
+  useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      if (e.detail === 'next') swipeNext();
+      else if (e.detail === 'prev') swipePrev();
+    };
+    window.addEventListener('notif-swipe' as any, handler);
+    return () => window.removeEventListener('notif-swipe' as any, handler);
+  }, [order, animatingOut]);
+
+  const topDataIdx = order[0];
 
   return (
     <div style={S.root} data-testid="notification-stack">
-      <div style={S.stack}>
-        {data.map((item, i) => {
-          const offset = i - idx;
-          if (offset < 0 || offset > 3) return null; // only show current + 3 behind
+      <div style={S.stack} onClick={swipeNext}>
+        {order.slice(0, 4).map((dataIdx, stackPos) => {
+          const item = source[dataIdx];
+          if (!item) return null;
+          const isFlying = dataIdx === animatingOut;
+          const pos = isFlying ? -1 : stackPos; // -1 = flying out
           return (
-            <div key={item.id} style={S.card(offset, item.color, data.length)}
+            <div
+              key={item.id}
+              style={isFlying ? {
+                ...S.card(0, item.color, source.length),
+                transform: 'translateY(140px) translateZ(-120px) scale(0.85)',
+                opacity: 0,
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                zIndex: source.length + 1,
+              } : S.card(pos, item.color, source.length)}
               data-testid={`notif-card-${item.id}`}
-              onClick={() => { if (offset === 0) go(1); }}>
+            >
               <div style={S.header}>
                 <div style={S.iconWrap(item.color)}>
                   {renderAppIcon(item.app)}
@@ -248,7 +278,9 @@ export function NotificationStackView({
             </div>
           );
         })}
-        <div style={S.counter}>{idx + 1} / {data.length}</div>
+        <div style={S.counter}>
+          {source[topDataIdx]?.app} · {order.indexOf(topDataIdx) + 1}/{source.length}
+        </div>
       </div>
     </div>
   );

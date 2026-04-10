@@ -94,7 +94,6 @@ export default function App() {
   const [navPoiQuery, setNavPoiQuery] = useState('');
   const [navSelectedIdx, setNavSelectedIdx] = useState(-1);
   const [navConfirmedPoi, setNavConfirmedPoi] = useState<POIResult | null>(null);
-  const [notifIdx, setNotifIdx] = useState(0);
 
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
@@ -251,12 +250,12 @@ export default function App() {
 
     // ── notifications 模式：上滑/下滑切换通知卡片 ──
     if (activeView === 'notifications') {
-      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'up') {
-        setNotifIdx(prev => Math.max(0, prev - 1));
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'down') {
+        window.dispatchEvent(new CustomEvent('notif-swipe', { detail: 'next' }));
         return;
       }
-      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'down') {
-        setNotifIdx(prev => prev + 1); // component clamps
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'up') {
+        window.dispatchEvent(new CustomEvent('notif-swipe', { detail: 'prev' }));
         return;
       }
     }
@@ -382,7 +381,7 @@ export default function App() {
   const content = () => {
     switch (activeView) {
       case 'home': return <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
-      case 'notifications': return <NotificationStackView items={[]} activeIndex={notifIdx} onIndexChange={setNotifIdx} />;
+      case 'notifications': return <NotificationStackView items={[]} />;
       case 'navigation': return <ARNavigationView navigationState={nav} route={route} />;
       case 'nav-search': return navPoiResults ? (
         <NavSearchResultsView
