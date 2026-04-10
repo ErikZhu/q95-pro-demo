@@ -67,7 +67,6 @@ const DEMO_ITEMS: NotifItem[] = [
 
 /* Emoji fallback icons for apps without URL icons */
 const EMOJI_ICONS: Record<string, string> = {
-  '微信': '💬',
   '钉钉': '🔔',
   '日历': '📅',
   '短信': '✉️',
@@ -75,6 +74,26 @@ const EMOJI_ICONS: Record<string, string> = {
   '电话': '📞',
   '系统': '⚙️',
 };
+
+/** 微信 SVG 图标 — 两个聊天气泡 */
+function WeChatIcon() {
+  return (
+    <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
+      <ellipse cx="20" cy="20" rx="14" ry="12" fill="#2DC100" />
+      <circle cx="14" cy="18" r="1.5" fill="#fff" />
+      <circle cx="20" cy="18" r="1.5" fill="#fff" />
+      <circle cx="26" cy="18" r="1.5" fill="#fff" />
+      <ellipse cx="30" cy="28" rx="11" ry="9.5" fill="#51C332" />
+      <circle cx="26" cy="27" r="1.2" fill="#fff" />
+      <circle cx="31" cy="27" r="1.2" fill="#fff" />
+    </svg>
+  );
+}
+
+function renderAppIcon(app: string) {
+  if (app === '微信') return <WeChatIcon />;
+  return <span style={{ fontSize: 20, lineHeight: 1 }}>{EMOJI_ICONS[app] || '📱'}</span>;
+}
 
 const KF = `
 @keyframes notif-slide-in {
@@ -137,7 +156,7 @@ const S = {
     display: 'flex', alignItems: 'center', gap: 12,
   },
   iconWrap: (color: string): React.CSSProperties => ({
-    width: 40, height: 40, borderRadius: '50%',
+    width: 44, height: 44, borderRadius: '50%',
     border: `2px solid ${color}40`,
     background: 'rgba(0,0,0,0.3)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -202,11 +221,7 @@ export function NotificationStackView({
               onClick={() => { if (offset === 0) go(1); }}>
               <div style={S.header}>
                 <div style={S.iconWrap(item.color)}>
-                  {item.icon ? (
-                    <img src={item.icon} alt={item.app} style={S.iconImg} />
-                  ) : (
-                    <span style={S.iconEmoji}>{EMOJI_ICONS[item.app] || '📱'}</span>
-                  )}
+                  {renderAppIcon(item.app)}
                 </div>
                 <span style={S.appName}>{item.app}</span>
                 <span style={S.time}>{item.time}</span>
