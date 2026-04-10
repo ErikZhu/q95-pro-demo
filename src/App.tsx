@@ -8,6 +8,7 @@ import { NotificationCenterView } from './components/notification/NotificationCe
 import { MusicPlayerView } from './components/music/MusicPlayerView';
 import { ARNavigationView } from './components/ar-nav/ARNavigationView';
 import { NavSearchResultsView } from './components/ar-nav/NavSearchResultsView';
+import { NavDetailView } from './components/ar-nav/NavDetailView';
 import type { POIResult } from './components/ar-nav/NavSearchResultsView';
 import { CameraView } from './components/camera/CameraView';
 import { AIAssistantView } from './components/ai/AIAssistantView';
@@ -71,8 +72,8 @@ export default function App() {
   const [showDemo, setShowDemo] = useState(false);
   const [device] = useState<DeviceStatus>(DEFAULT_DEVICE);
   const [notifs] = useState<Notification[]>([]);
-  const [nav, setNav] = useState<NavigationState>(DEFAULT_NAV);
-  const [route, setRoute] = useState<Route | null>(null);
+  const [nav] = useState<NavigationState>(DEFAULT_NAV);
+  const [route] = useState<Route | null>(null);
   const sState = useMemo(() => settingsSvc.getState(), []);
 
   // Orb Menu 状态管理
@@ -92,6 +93,7 @@ export default function App() {
   const [navPoiResults, setNavPoiResults] = useState<POIResult[] | null>(null);
   const [navPoiQuery, setNavPoiQuery] = useState('');
   const [navSelectedIdx, setNavSelectedIdx] = useState(-1);
+  const [navConfirmedPoi, setNavConfirmedPoi] = useState<POIResult | null>(null);
 
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
@@ -128,19 +130,10 @@ export default function App() {
   const confirmNavPoi = useCallback((poi: POIResult) => {
     setNavPoiResults(null);
     setNavSelectedIdx(-1);
-    // 激活导航状态
-    setNav(prev => ({ ...prev, isActive: true, gpsSignal: 'strong' }));
-    setRoute({
-      origin: { lat: 22.5431, lng: 113.9530, name: '当前位置' },
-      destination: { lat: 22.5445, lng: 113.9548, name: poi.name.split('（')[0] },
-      waypoints: [],
-      distance: parseInt(poi.distance) || 500,
-      estimatedTime: (parseInt(poi.duration) || 3) * 60000,
-      mode: poi.duration.includes('骑行') ? 'bike' : 'walk',
-    });
+    setNavConfirmedPoi(poi);
     setAiFeedbackText(`正在导航到 ${poi.name.split('（')[0]}...`);
     setAiStatus('responding');
-    setActiveView('navigation');
+    setActiveView('nav-detail');
     setTimeout(() => { setAiStatus('idle'); setAiFeedbackText(''); }, 4000);
   }, []);
 
@@ -360,6 +353,15 @@ export default function App() {
           results={navPoiResults}
           selectedIndex={navSelectedIdx}
           onSelect={(_poi, idx) => setNavSelectedIdx(idx)}
+        />
+      ) : <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
+      case 'nav-detail': return navConfirmedPoi ? (
+        <NavDetailView
+          nextDistance={navConfirmedPoi.distance}
+          turnText="左转进入永初路"
+          totalDistance="1.2 公里"
+          eta={new Date(Date.now() + 300000).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+          destination={navConfirmedPoi.name.split('（')[0]}
         />
       ) : <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
       case 'camera': return <CameraView recordingState={{ isRecording: false, duration: 0, startTime: null, resolution: { width: 1920, height: 1080 } }} storageInfo={{ total: 8192, used: 2048, remaining: 6144, isLow: false }} />;
