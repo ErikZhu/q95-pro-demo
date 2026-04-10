@@ -40,8 +40,12 @@ const S = {
     fontSize: 16, fontWeight: 500 as const,
     color: 'rgba(255, 255, 255, 0.88)',
     background: 'rgba(255, 255, 255, 0.04)',
+    backdropFilter: 'blur(24px) saturate(1.4)',
+    WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+    border: '2px solid rgba(255, 255, 255, 0.08)',
     borderRadius: 12, padding: '10px 24px',
     textAlign: 'center' as const, width: '100%', maxWidth: 480,
+    boxShadow: '0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)',
   },
   list: {
     display: 'flex', flexDirection: 'column' as const,
@@ -50,15 +54,28 @@ const S = {
   item: (selected: boolean): React.CSSProperties => ({
     display: 'flex', alignItems: 'center', gap: 14,
     padding: '12px 16px', borderRadius: 12,
-    background: selected ? 'rgba(110, 54, 238, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-    border: selected ? '1.5px solid rgba(110, 54, 238, 0.6)' : '1.5px solid rgba(255, 255, 255, 0.06)',
-    cursor: 'pointer', transition: 'all 0.2s ease',
-    boxShadow: selected ? '0 0 12px rgba(110, 54, 238, 0.15)' : 'none',
+    background: selected
+      ? 'rgba(127, 73, 232, 0.08)'
+      : 'rgba(255, 255, 255, 0.04)',
+    backdropFilter: 'blur(24px) saturate(1.4)',
+    WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+    /* 非选中: inside stroke 2px; 选中: 透明 border 让 outline 主导 */
+    border: selected
+      ? '2px solid transparent'
+      : '2px solid rgba(255, 255, 255, 0.08)',
+    /* 选中: outside stroke 6px #7F49E8 */
+    outline: selected ? '3px solid #7F49E8' : 'none',
+    outlineOffset: selected ? '0px' : undefined,
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    boxShadow: selected
+      ? '0 0 20px rgba(127, 73, 232, 0.25), inset 0 1px 0 rgba(255,255,255,0.06)'
+      : '0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)',
   }),
   radio: (selected: boolean): React.CSSProperties => ({
     width: 18, height: 18, borderRadius: '50%',
-    border: selected ? '2px solid rgba(110, 54, 238, 0.8)' : '2px solid rgba(255, 255, 255, 0.2)',
-    background: selected ? 'radial-gradient(circle, rgba(110, 54, 238, 0.9) 40%, transparent 41%)' : 'transparent',
+    border: selected ? '2px solid #7F49E8' : '2px solid rgba(255, 255, 255, 0.2)',
+    background: selected ? 'radial-gradient(circle, #7F49E8 40%, transparent 41%)' : 'transparent',
     flexShrink: 0, transition: 'all 0.2s ease',
   }),
   info: { flex: 1, minWidth: 0 },
@@ -72,8 +89,9 @@ const S = {
   duration: { fontSize: 11, color: 'rgba(255, 255, 255, 0.45)', marginTop: 2 },
   confirmBtn: {
     marginTop: 4, padding: '8px 32px', borderRadius: 10,
-    border: '1px solid rgba(110, 54, 238, 0.4)',
-    background: 'rgba(110, 54, 238, 0.15)',
+    border: '1px solid rgba(127, 73, 232, 0.5)',
+    background: 'rgba(127, 73, 232, 0.15)',
+    backdropFilter: 'blur(16px)',
     color: 'rgba(200, 170, 255, 0.95)',
     fontSize: 13, fontWeight: 500 as const, cursor: 'pointer',
     transition: 'all 0.15s ease',
