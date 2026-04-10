@@ -4,7 +4,7 @@ import { Icon } from './components/icons/Icon';
 import { Launcher } from './components/launcher/Launcher';
 import { StatusBarView } from './components/status-bar/StatusBarView';
 import { SmartTaskZoneView } from './components/smart-task/SmartTaskZoneView';
-import { NotificationStackView } from './components/notification/NotificationStackView';
+import { PanelContainer } from './components/notification/PanelContainer';
 import { MusicPlayerView } from './components/music/MusicPlayerView';
 import { MiniPlayer } from './components/music/MiniPlayer';
 import { ARNavigationView } from './components/ar-nav/ARNavigationView';
@@ -248,7 +248,7 @@ export default function App() {
       return;
     }
 
-    // ── notifications 模式：上滑/下滑切换通知卡片 ──
+    // ── notifications 模式：上滑/下滑切换通知卡片，左滑/右滑切换面板 ──
     if (activeView === 'notifications') {
       if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'down') {
         window.dispatchEvent(new CustomEvent('notif-swipe', { detail: 'next' }));
@@ -256,6 +256,14 @@ export default function App() {
       }
       if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'up') {
         window.dispatchEvent(new CustomEvent('notif-swipe', { detail: 'prev' }));
+        return;
+      }
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'left') {
+        window.dispatchEvent(new CustomEvent('panel-swipe', { detail: 'left' }));
+        return;
+      }
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'right') {
+        window.dispatchEvent(new CustomEvent('panel-swipe', { detail: 'right' }));
         return;
       }
     }
@@ -381,7 +389,7 @@ export default function App() {
   const content = () => {
     switch (activeView) {
       case 'home': return <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
-      case 'notifications': return <NotificationStackView items={[]} />;
+      case 'notifications': return <PanelContainer />;
       case 'navigation': return <ARNavigationView navigationState={nav} route={route} />;
       case 'nav-search': return navPoiResults ? (
         <NavSearchResultsView
