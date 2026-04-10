@@ -71,8 +71,8 @@ export default function App() {
   const [showDemo, setShowDemo] = useState(false);
   const [device] = useState<DeviceStatus>(DEFAULT_DEVICE);
   const [notifs] = useState<Notification[]>([]);
-  const [nav] = useState<NavigationState>(DEFAULT_NAV);
-  const [route] = useState<Route | null>(null);
+  const [nav, setNav] = useState<NavigationState>(DEFAULT_NAV);
+  const [route, setRoute] = useState<Route | null>(null);
   const sState = useMemo(() => settingsSvc.getState(), []);
 
   // Orb Menu 状态管理
@@ -128,6 +128,16 @@ export default function App() {
   const confirmNavPoi = useCallback((poi: POIResult) => {
     setNavPoiResults(null);
     setNavSelectedIdx(-1);
+    // 激活导航状态
+    setNav(prev => ({ ...prev, isActive: true, gpsSignal: 'strong' }));
+    setRoute({
+      origin: { lat: 22.5431, lng: 113.9530, name: '当前位置' },
+      destination: { lat: 22.5445, lng: 113.9548, name: poi.name.split('（')[0] },
+      waypoints: [],
+      distance: parseInt(poi.distance) || 500,
+      estimatedTime: (parseInt(poi.duration) || 3) * 60000,
+      mode: poi.duration.includes('骑行') ? 'bike' : 'walk',
+    });
     setAiFeedbackText(`正在导航到 ${poi.name.split('（')[0]}...`);
     setAiStatus('responding');
     setActiveView('navigation');
