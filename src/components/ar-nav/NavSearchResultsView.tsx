@@ -87,23 +87,19 @@ const S = {
   distCol: { textAlign: 'right' as const, flexShrink: 0 },
   distance: { fontSize: 14, fontWeight: 600 as const, color: 'rgba(255, 255, 255, 0.85)' },
   duration: { fontSize: 11, color: 'rgba(255, 255, 255, 0.45)', marginTop: 2 },
-  confirmBtn: {
-    marginTop: 4, padding: '8px 32px', borderRadius: 10,
-    border: '1px solid rgba(127, 73, 232, 0.5)',
-    background: 'rgba(127, 73, 232, 0.15)',
-    backdropFilter: 'blur(16px)',
-    color: 'rgba(200, 170, 255, 0.95)',
-    fontSize: 13, fontWeight: 500 as const, cursor: 'pointer',
-    transition: 'all 0.15s ease',
+  subtitle: {
+    fontSize: 12, color: 'rgba(127, 73, 232, 0.85)',
+    textAlign: 'center' as const, marginTop: -8,
+    letterSpacing: 0.3, fontWeight: 500 as const,
+    animation: 'sensible-fade-in 0.3s ease-out',
   },
 };
 
 export function NavSearchResultsView({
-  results, selectedIndex = -1, onSelect, onConfirm,
+  results, selectedIndex = -1, onSelect,
 }: NavSearchResultsViewProps) {
   const [localIdx, setLocalIdx] = useState(selectedIndex);
 
-  // 同步外部 selectedIndex
   useEffect(() => {
     if (selectedIndex >= 0) setLocalIdx(selectedIndex);
   }, [selectedIndex]);
@@ -120,6 +116,11 @@ export function NavSearchResultsView({
       <div style={S.title}>
         搜索到附近{results.length}个结果，去第几个？
       </div>
+      {selectedPoi && (
+        <div style={S.subtitle}>
+          导航到 {selectedPoi.name.split('（')[0]}，捏合 / 点击确认
+        </div>
+      )}
       <div style={S.list}>
         {results.map((poi, i) => {
           const sel = i === localIdx;
@@ -139,11 +140,6 @@ export function NavSearchResultsView({
           );
         })}
       </div>
-      {selectedPoi && onConfirm && (
-        <button style={S.confirmBtn} onClick={() => onConfirm(selectedPoi)} data-testid="nav-confirm-btn">
-          导航到 {selectedPoi.name.split('（')[0]}
-        </button>
-      )}
     </div>
   );
 }

@@ -259,18 +259,27 @@ export default function App() {
         setNavSelectedIdx(prev => prev < 0 ? 0 : (prev + 1) % count);
         return;
       }
-      // 点击/确认 → 确认当前选中项
+      // 点击/确认/捏合 → 确认当前选中项
       if ((e.source === 'side_touchpad' && e.type === 'tap') ||
-          (e.source === 'physical_button' && e.type === 'confirm')) {
+          (e.source === 'physical_button' && e.type === 'confirm') ||
+          (e.source === 'emg_band' && e.type === 'pinch')) {
         if (navSelectedIdx >= 0 && navSelectedIdx < count) {
           confirmNavPoi(navPoiResults[navSelectedIdx]);
         }
         return;
       }
 
-      // 语音"第X个" → 直接选中并确认
+      // 语音"第X个" → 直接选中并确认；语音"确认" → 确认当前选中
       if (e.source === 'voice' && e.type === 'command' && e.data?.text) {
         const vt = String(e.data.text);
+
+        // 语音"确认"/"确定"/"好的"/"出发" → 确认当前选中项
+        if ((vt.includes('确认') || vt.includes('确定') || vt.includes('好的') || vt.includes('出发')) &&
+            navSelectedIdx >= 0 && navSelectedIdx < count) {
+          confirmNavPoi(navPoiResults[navSelectedIdx]);
+          return;
+        }
+
         const numMap: Record<string, number> = {
           '一': 0, '1': 0, '第一': 0, '第一个': 0, '第1个': 0,
           '二': 1, '2': 1, '第二': 1, '第二个': 1, '第2个': 1,
@@ -341,8 +350,6 @@ export default function App() {
           results={navPoiResults}
           selectedIndex={navSelectedIdx}
           onSelect={(_poi, idx) => setNavSelectedIdx(idx)}
-          onConfirm={confirmNavPoi}
-          onDismiss={() => { setNavPoiResults(null); setNavSelectedIdx(-1); setActiveView('home'); }}
         />
       ) : <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
       case 'camera': return <CameraView recordingState={{ isRecording: false, duration: 0, startTime: null, resolution: { width: 1920, height: 1080 } }} storageInfo={{ total: 8192, used: 2048, remaining: 6144, isLow: false }} />;
