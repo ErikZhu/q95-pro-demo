@@ -6,6 +6,7 @@ import { StatusBarView } from './components/status-bar/StatusBarView';
 import { SmartTaskZoneView } from './components/smart-task/SmartTaskZoneView';
 import { NotificationCenterView } from './components/notification/NotificationCenter';
 import { MusicPlayerView } from './components/music/MusicPlayerView';
+import { MiniPlayer } from './components/music/MiniPlayer';
 import { ARNavigationView } from './components/ar-nav/ARNavigationView';
 import { NavSearchResultsView } from './components/ar-nav/NavSearchResultsView';
 import { NavDetailView } from './components/ar-nav/NavDetailView';
@@ -429,7 +430,17 @@ export default function App() {
         </div>
         <div className="status-bar-slot"><StatusBarView status={device} isExpanded={false} /></div>
       </div>
-      <div className="main-task-area">{content()}</div>
+      <div className="main-task-area">
+        {content()}
+        {musicState.status === 'playing' && activeView === 'home' && musicState.currentTrack && (
+          <MiniPlayer
+            trackName={musicState.currentTrack.name}
+            artist={musicState.currentTrack.artist}
+            isPlaying={true}
+            onClick={() => setActiveView('music')}
+          />
+        )}
+      </div>
       <OrbMenuView
         menuState={orbMenuState}
         menuItems={ORB_MENU_ITEMS}
