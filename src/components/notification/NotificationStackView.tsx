@@ -26,7 +26,7 @@ const DEMO_ITEMS: NotifItem[] = [
   {
     id: 'wechat-1',
     app: '微信',
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/WeChat.svg/120px-WeChat.svg.png',
+    icon: '',
     time: '2min前',
     message: '张伟：周末出门爬山么？',
     color: '#1AAD19',
@@ -34,7 +34,7 @@ const DEMO_ITEMS: NotifItem[] = [
   {
     id: 'dingtalk-1',
     app: '钉钉',
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/DingTalk_Logo.svg/120px-DingTalk_Logo.svg.png',
+    icon: '',
     time: '5min前',
     message: '李白：准备下午的会议……',
     color: '#3A7BF7',
@@ -67,9 +67,11 @@ const DEMO_ITEMS: NotifItem[] = [
 
 /* Emoji fallback icons for apps without URL icons */
 const EMOJI_ICONS: Record<string, string> = {
+  '微信': '💬',
+  '钉钉': '🔔',
   '日历': '📅',
-  '短信': '💬',
-  '邮件': '✉️',
+  '短信': '✉️',
+  '邮件': '📧',
   '电话': '📞',
   '系统': '⚙️',
 };
@@ -176,7 +178,7 @@ export function NotificationStackView({
   useMemo(() => injectKf(), []);
   const data = items.length > 0 ? items : DEMO_ITEMS;
   const [localIdx, setLocalIdx] = useState(0);
-  const idx = controlledIdx ?? localIdx;
+  const idx = Math.max(0, Math.min((controlledIdx ?? localIdx), data.length - 1));
 
   useEffect(() => {
     if (controlledIdx !== undefined && controlledIdx >= 0) setLocalIdx(controlledIdx);

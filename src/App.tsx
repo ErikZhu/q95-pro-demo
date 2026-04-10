@@ -351,7 +351,7 @@ export default function App() {
         setAiFeedbackText('');
       }, fadeDelay);
     }
-  }, [routeIntent, navPoiResults, navSelectedIdx, confirmNavPoi]);
+  }, [routeIntent, navPoiResults, navSelectedIdx, confirmNavPoi, activeView]);
 
   const toggleDemo = useCallback(() => setShowDemo((p) => !p), []);
 
