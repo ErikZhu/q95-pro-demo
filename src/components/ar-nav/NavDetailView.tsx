@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 /**
  * NavDetailView — 导航详情页（POI 确认后展示）
  *
@@ -76,10 +78,11 @@ const S = {
     gap: 6,
   },
   arrowSvg: {
-    width: 48,
-    height: 48,
+    width: 72,
+    height: 72,
     color: '#7F49E8',
-    filter: 'drop-shadow(0 0 8px rgba(127, 73, 232, 0.4))',
+    filter: 'drop-shadow(0 0 12px rgba(127, 73, 232, 0.5))',
+    animation: 'nav-arrow-pulse 1.6s ease-in-out infinite',
   },
   progressBar: {
     width: 4,
@@ -127,17 +130,34 @@ const S = {
   },
 };
 
-/** 右转箭头 SVG */
+/** 右转箭头 SVG — 加粗 + CSS 动画 */
+
+const NAV_KF = `
+@keyframes nav-arrow-pulse {
+  0%, 100% { transform: translateX(0) scale(1); opacity: 1; filter: drop-shadow(0 0 12px rgba(127,73,232,0.5)); }
+  50%      { transform: translateX(4px) scale(1.08); opacity: 0.85; filter: drop-shadow(0 0 20px rgba(127,73,232,0.7)); }
+}
+`;
+let navKfDone = false;
+function injectNavKf() {
+  if (navKfDone || typeof document === 'undefined') return;
+  const s = document.createElement('style');
+  s.textContent = NAV_KF;
+  document.head.appendChild(s);
+  navKfDone = true;
+}
+
 function TurnArrow() {
   return (
     <svg viewBox="0 0 48 48" style={S.arrowSvg} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 36V20C14 14.477 18.477 10 24 10H30" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M26 6L34 10L26 14" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M14 38V20C14 13.373 19.373 8 26 8H32" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M27 3L36 8L27 13" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
 
 export function NavDetailView({ nextDistance, turnText, totalDistance, eta, destination }: NavDetailProps) {
+  useMemo(() => injectNavKf(), []);
   // 拆分距离数字和单位
   const numMatch = nextDistance.match(/^([\d.]+)\s*(.+)$/);
   const num = numMatch ? numMatch[1] : nextDistance;
