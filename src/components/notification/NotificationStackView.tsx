@@ -145,26 +145,25 @@ const S = {
   card: (offset: number, color: string, total: number): React.CSSProperties => {
     const isActive = offset === 0;
     const behind = Math.min(Math.abs(offset), 3);
-    const scale = 1 - behind * 0.06;
-    const translateY = behind * 28;
-    const translateZ = -behind * 40;
-    const opacity = behind === 0 ? 1 : behind === 1 ? 0.7 : behind === 2 ? 0.4 : 0.2;
-    const blur = behind === 0 ? 0 : behind * 1.5;
+    const scale = 1 - behind * 0.05;
+    const translateY = behind * 36;
+    const translateZ = -behind * 30;
+    const opacity = behind === 0 ? 1 : behind === 1 ? 0.85 : behind === 2 ? 0.65 : 0.45;
+    const bgAlpha = behind === 0 ? 0.82 : behind === 1 ? 0.55 : behind === 2 ? 0.4 : 0.3;
     return {
       position: 'absolute',
       top: 0, left: 0, right: 0,
       padding: '16px 20px',
       borderRadius: 16,
-      background: 'rgba(20, 18, 35, 0.88)',
-      backdropFilter: 'blur(24px) saturate(1.4)',
-      WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
-      border: isActive ? `2px solid ${color}` : '1.5px solid rgba(255,255,255,0.06)',
+      background: `rgba(20, 18, 35, ${bgAlpha})`,
+      backdropFilter: 'blur(20px) saturate(1.3)',
+      WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+      border: isActive ? `2px solid ${color}` : `1.5px solid ${color}25`,
       boxShadow: isActive
         ? `0 8px 32px rgba(0,0,0,0.5), 0 0 16px ${color}30, inset 0 1px 0 rgba(255,255,255,0.06)`
-        : '0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)',
+        : `0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.03)`,
       transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
       opacity,
-      filter: blur > 0 ? `blur(${blur}px)` : undefined,
       transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
       zIndex: total - behind,
       pointerEvents: isActive ? 'auto' as const : 'none' as const,
