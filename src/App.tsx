@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import './App.css';
 import { Icon } from './components/icons/Icon';
 import { Launcher } from './components/launcher/Launcher';
@@ -134,7 +134,7 @@ export default function App() {
     setAiFeedbackText(`正在导航到 ${poi.name.split('（')[0]}...`);
     setAiStatus('responding');
     setActiveView('nav-detail');
-    setTimeout(() => { setAiStatus('idle'); setAiFeedbackText(''); }, 4000);
+    setTimeout(() => { setAiStatus('idle'); }, 4000);
   }, []);
 
   /** 意图路由：根据语音内容判断是否需要切换场景
@@ -341,6 +341,30 @@ export default function App() {
   }, [routeIntent, navPoiResults, navSelectedIdx, confirmNavPoi]);
 
   const toggleDemo = useCallback(() => setShowDemo((p) => !p), []);
+
+  // 根据当前视图设置持久任务提示
+  const VIEW_HINTS: Record<string, string> = {
+    'nav-detail': '小Q正在帮你导航中...',
+    'nav-search': '小Q正在帮你搜索附近地点...',
+    'navigation': '小Q正在帮你导航中...',
+    'music': '小Q正在帮你播放音乐...',
+    'camera': '小Q正在帮你拍照...',
+    'translator': '小Q正在帮你翻译...',
+    'health': '小Q正在帮你查看健康数据...',
+    'notifications': '小Q正在帮你查看通知...',
+    'settings': '小Q正在帮你调整设置...',
+    'messaging': '小Q正在帮你处理消息...',
+    'teleprompter': '小Q正在帮你提词...',
+  };
+  // 当 aiStatus 回到 idle 且不在首页时，设置任务提示
+  useEffect(() => {
+    if (aiStatus === 'idle' && activeView !== 'home') {
+      const hint = VIEW_HINTS[activeView] || '';
+      if (hint) setAiFeedbackText(hint);
+    } else if (aiStatus === 'idle' && activeView === 'home') {
+      setAiFeedbackText('');
+    }
+  }, [aiStatus, activeView]);
 
   const content = () => {
     switch (activeView) {

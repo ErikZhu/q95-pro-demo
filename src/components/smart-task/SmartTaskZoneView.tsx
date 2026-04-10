@@ -452,11 +452,20 @@ export function SmartTaskZoneView({
               </div>
             )}
 
-            {/* Phase 4: idle — 祝福语 + 待命提示 */}
+            {/* Phase 4: idle — 任务提示 or 祝福语 */}
             {aiStatus === 'idle' && (
               <div>
-                <div style={S.greetingTitle}>{greeting}</div>
-                <div style={S.greetingSub}>小Q随时等候主人的吩咐</div>
+                {aiFeedbackText ? (
+                  <>
+                    <div style={S.phaseLabel}>小Q</div>
+                    <div style={S.greetingSub}>{aiFeedbackText}</div>
+                  </>
+                ) : (
+                  <>
+                    <div style={S.greetingTitle}>{greeting}</div>
+                    <div style={S.greetingSub}>小Q随时等候主人的吩咐</div>
+                  </>
+                )}
               </div>
             )}
           </div>
