@@ -4,7 +4,7 @@ import { Icon } from './components/icons/Icon';
 import { Launcher } from './components/launcher/Launcher';
 import { StatusBarView } from './components/status-bar/StatusBarView';
 import { SmartTaskZoneView } from './components/smart-task/SmartTaskZoneView';
-import { NotificationCenterView } from './components/notification/NotificationCenter';
+import { NotificationStackView } from './components/notification/NotificationStackView';
 import { MusicPlayerView } from './components/music/MusicPlayerView';
 import { MiniPlayer } from './components/music/MiniPlayer';
 import { ARNavigationView } from './components/ar-nav/ARNavigationView';
@@ -19,7 +19,7 @@ import { HealthMonitorView } from './components/health/HealthMonitorView';
 import { MessagingView } from './components/messaging/MessagingView';
 import { SettingsPanelView } from './components/settings/SettingsPanel';
 import { DemoControlPanel } from './components/demo/DemoControlPanel';
-import type { DeviceStatus, Notification } from './types/data';
+import type { DeviceStatus } from './types/data';
 import type { InputEvent } from './types/interaction';
 import type { NavigationState, Route } from './types/navigation';
 import type { UserSettings } from './types/settings';
@@ -72,7 +72,6 @@ export default function App() {
   const [dualMode, setDualMode] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
   const [device] = useState<DeviceStatus>(DEFAULT_DEVICE);
-  const [notifs] = useState<Notification[]>([]);
   const [nav] = useState<NavigationState>(DEFAULT_NAV);
   const [route] = useState<Route | null>(null);
   const sState = useMemo(() => settingsSvc.getState(), []);
@@ -95,6 +94,7 @@ export default function App() {
   const [navPoiQuery, setNavPoiQuery] = useState('');
   const [navSelectedIdx, setNavSelectedIdx] = useState(-1);
   const [navConfirmedPoi, setNavConfirmedPoi] = useState<POIResult | null>(null);
+  const [notifIdx, setNotifIdx] = useState(0);
 
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
@@ -249,6 +249,18 @@ export default function App() {
       return;
     }
 
+    // ── notifications 模式：上滑/下滑切换通知卡片 ──
+    if (activeView === 'notifications') {
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'up') {
+        setNotifIdx(prev => Math.max(0, prev - 1));
+        return;
+      }
+      if (e.source === 'side_touchpad' && e.type === 'swipe' && e.data?.direction === 'down') {
+        setNotifIdx(prev => prev + 1); // component clamps
+        return;
+      }
+    }
+
     // ── nav-search 模式：手势控制 POI 列表 ──
     if (navPoiResults && navPoiResults.length > 0) {
       const count = navPoiResults.length;
@@ -370,7 +382,7 @@ export default function App() {
   const content = () => {
     switch (activeView) {
       case 'home': return <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
-      case 'notifications': return <NotificationCenterView notifications={notifs} groupedNotifications={new Map()} mode="list" unreadCount={notifs.filter((n) => !n.isRead).length} />;
+      case 'notifications': return <NotificationStackView items={[]} activeIndex={notifIdx} onIndexChange={setNotifIdx} />;
       case 'navigation': return <ARNavigationView navigationState={nav} route={route} />;
       case 'nav-search': return navPoiResults ? (
         <NavSearchResultsView
