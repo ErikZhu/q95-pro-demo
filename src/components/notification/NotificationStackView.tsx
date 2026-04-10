@@ -75,24 +75,43 @@ const EMOJI_ICONS: Record<string, string> = {
   '系统': '⚙️',
 };
 
-/** 微信 SVG 图标 — 两个聊天气泡 */
+/** 微信 SVG 图标 — 高清版：灰色圆环 + 绿色/白色聊天气泡 + 3D 渐变 */
 function WeChatIcon() {
   return (
-    <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-      <ellipse cx="20" cy="20" rx="14" ry="12" fill="#2DC100" />
-      <circle cx="14" cy="18" r="1.5" fill="#fff" />
-      <circle cx="20" cy="18" r="1.5" fill="#fff" />
-      <circle cx="26" cy="18" r="1.5" fill="#fff" />
-      <ellipse cx="30" cy="28" rx="11" ry="9.5" fill="#51C332" />
-      <circle cx="26" cy="27" r="1.2" fill="#fff" />
-      <circle cx="31" cy="27" r="1.2" fill="#fff" />
+    <svg viewBox="0 0 100 100" width="42" height="42">
+      <defs>
+        <radialGradient id="wc-green" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#5FE36A" />
+          <stop offset="100%" stopColor="#2DC100" />
+        </radialGradient>
+        <radialGradient id="wc-white" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#E8EDE8" />
+          <stop offset="100%" stopColor="#B0BFB0" />
+        </radialGradient>
+      </defs>
+      {/* 外圈灰色描边 */}
+      <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(160,160,160,0.5)" strokeWidth="3" />
+      {/* 黑色背景 */}
+      <circle cx="50" cy="50" r="44" fill="#0a0a0a" />
+      {/* 绿色大气泡 */}
+      <ellipse cx="42" cy="42" rx="22" ry="19" fill="url(#wc-green)" />
+      <ellipse cx="33" cy="52" rx="4" ry="5" fill="url(#wc-green)" />
+      {/* 绿色气泡眼睛 */}
+      <circle cx="35" cy="40" r="2.5" fill="#1a6e10" />
+      <circle cx="49" cy="40" r="2.5" fill="#1a6e10" />
+      {/* 白色小气泡 */}
+      <ellipse cx="60" cy="58" rx="17" ry="14.5" fill="url(#wc-white)" />
+      <ellipse cx="68" cy="66" rx="3.5" ry="4" fill="url(#wc-white)" />
+      {/* 白色气泡眼睛 */}
+      <circle cx="54" cy="56" r="2" fill="#5a6a5a" />
+      <circle cx="65" cy="56" r="2" fill="#5a6a5a" />
     </svg>
   );
 }
 
 function renderAppIcon(app: string) {
   if (app === '微信') return <WeChatIcon />;
-  return <span style={{ fontSize: 20, lineHeight: 1 }}>{EMOJI_ICONS[app] || '📱'}</span>;
+  return <span style={{ fontSize: 22, lineHeight: 1 }}>{EMOJI_ICONS[app] || '📱'}</span>;
 }
 
 const KF = `
