@@ -20,6 +20,7 @@ export interface LauncherProps {
 export interface AppShortcut { id: string; icon: IconName; label: string; }
 
 export const APP_SHORTCUTS: AppShortcut[] = [
+  { id: 'notifications', icon: 'bell', label: '通知' },
   { id: 'ar_navigation', icon: 'compass', label: 'AR 导航' },
   { id: 'camera', icon: 'camera', label: '相机' },
   { id: 'music', icon: 'music', label: '音乐' },
