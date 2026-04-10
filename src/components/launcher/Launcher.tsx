@@ -57,7 +57,7 @@ function getBatteryColor(level: number, isCharging: boolean): string {
 }
 
 export function Launcher({ deviceStatus, onLaunchApp }: LauncherProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [launchStatus, setLaunchStatus] = useState<LaunchStatus>({ state: 'idle', appId: null, errorMessage: null, retryCount: 0 });
   const retryCountRef = useRef(0);
   const gazeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
