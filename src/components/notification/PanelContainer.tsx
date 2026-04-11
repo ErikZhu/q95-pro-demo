@@ -20,7 +20,7 @@ const S = {
   },
   dotBar: {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    padding: '8px 0 4px',
+    padding: '6px 0 2px',
     flexShrink: 0,
   },
   dotPill: {
@@ -43,6 +43,7 @@ const S = {
   }),
   panelArea: {
     flex: 1, position: 'relative' as const, overflow: 'hidden',
+    display: 'flex', alignItems: 'center',
   },
   panelSlider: (idx: number): React.CSSProperties => ({
     display: 'flex',
@@ -50,11 +51,31 @@ const S = {
     height: '100%',
     transform: `translateX(-${idx * (100 / PANELS.length)}%)`,
     transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    alignItems: 'center',
   }),
   panel: {
     width: `${100 / PANELS.length}%`,
     height: '100%',
     flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0 16px',
+  },
+  glassCard: {
+    width: '100%',
+    maxWidth: 520,
+    height: 380,
+    borderRadius: 20,
+    background: 'rgba(255, 255, 255, 0.04)',
+    backdropFilter: 'blur(24px) saturate(1.3)',
+    WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06)',
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 };
 
@@ -87,10 +108,14 @@ export function PanelContainer() {
       <div style={S.panelArea}>
         <div style={S.panelSlider(activeIdx)}>
           <div style={S.panel}>
-            <NotificationStackView items={[]} />
+            <div style={S.glassCard as React.CSSProperties}>
+              <NotificationStackView items={[]} />
+            </div>
           </div>
           <div style={S.panel}>
-            <ControlCenterView />
+            <div style={S.glassCard as React.CSSProperties}>
+              <ControlCenterView />
+            </div>
           </div>
         </div>
       </div>

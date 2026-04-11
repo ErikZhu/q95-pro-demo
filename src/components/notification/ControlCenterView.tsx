@@ -20,7 +20,7 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center', justifyContent: 'center',
-    padding: '20px 24px', gap: 16,
+    padding: '16px 20px', gap: 14,
     fontFamily: 'system-ui, -apple-system, sans-serif',
     color: 'rgba(255,255,255,0.92)',
   },

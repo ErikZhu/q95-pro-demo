@@ -139,8 +139,8 @@ const S = {
   },
   stack: {
     position: 'relative' as const,
-    width: '85%', maxWidth: 480,
-    height: 280,
+    width: '90%', maxWidth: 460,
+    height: 300,
   },
   card: (offset: number, color: string, total: number): React.CSSProperties => {
     const isActive = offset === 0;
