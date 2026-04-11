@@ -3,24 +3,22 @@ import { NotificationStackView } from './NotificationStackView';
 import { ControlCenterView } from './ControlCenterView';
 
 /**
- * PanelContainer — 多面板容器（消息中心 + 控制中心）
- * 顶部定位豆指示器，左滑/右滑切换面板
+ * PanelContainer — 统一玻璃面板，内容在通知/控制中心间切换
+ * 顶部定位豆，左滑/右滑切换内容
  */
 
-const PANELS = [
-  { id: 'notifications', label: '消息' },
-  { id: 'control', label: '控制' },
-];
+const PANELS = ['notifications', 'control'] as const;
 
 const S = {
   root: {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
-    overflow: 'hidden',
+    alignItems: 'center',
+    padding: '4px 16px 8px',
+    gap: 6,
   },
   dotBar: {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    padding: '6px 0 2px',
     flexShrink: 0,
   },
   dotPill: {
@@ -41,31 +39,9 @@ const S = {
     boxShadow: active ? '0 0 8px rgba(127,73,232,0.5)' : 'none',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   }),
-  panelArea: {
-    flex: 1, position: 'relative' as const, overflow: 'hidden',
-    display: 'flex', alignItems: 'center',
-  },
-  panelSlider: (idx: number): React.CSSProperties => ({
-    display: 'flex',
-    width: `${PANELS.length * 100}%`,
-    height: '100%',
-    transform: `translateX(-${idx * (100 / PANELS.length)}%)`,
-    transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-    alignItems: 'center',
-  }),
-  panel: {
-    width: `${100 / PANELS.length}%`,
-    height: '100%',
-    flexShrink: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '0 16px',
-  },
   glassCard: {
-    width: '100%',
-    maxWidth: 520,
-    height: 380,
+    flex: 1,
+    width: '100%', maxWidth: 560,
     borderRadius: 20,
     background: 'rgba(255, 255, 255, 0.04)',
     backdropFilter: 'blur(24px) saturate(1.3)',
@@ -73,10 +49,15 @@ const S = {
     border: '1px solid rgba(255, 255, 255, 0.08)',
     boxShadow: '0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06)',
     overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: 'relative' as const,
   },
+  content: (visible: boolean): React.CSSProperties => ({
+    position: 'absolute',
+    inset: 0,
+    opacity: visible ? 1 : 0,
+    transition: 'opacity 0.35s ease',
+    pointerEvents: visible ? 'auto' : 'none',
+  }),
 };
 
 export function PanelContainer() {
@@ -85,10 +66,8 @@ export function PanelContainer() {
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
-      if (detail === 'left') {
+      if (detail === 'left' || detail === 'right') {
         setActiveIdx(prev => (prev + 1) % PANELS.length);
-      } else if (detail === 'right') {
-        setActiveIdx(prev => (prev - 1 + PANELS.length) % PANELS.length);
       }
     };
     window.addEventListener('panel-swipe', handler);
@@ -100,23 +79,16 @@ export function PanelContainer() {
       <div style={S.dotBar}>
         <div style={S.dotPill as React.CSSProperties}>
           {PANELS.map((p, i) => (
-            <div key={p.id} style={S.dot(i === activeIdx)}
-              data-testid={`dot-${p.id}`} />
+            <div key={p} style={S.dot(i === activeIdx)} data-testid={`dot-${p}`} />
           ))}
         </div>
       </div>
-      <div style={S.panelArea}>
-        <div style={S.panelSlider(activeIdx)}>
-          <div style={S.panel}>
-            <div style={S.glassCard as React.CSSProperties}>
-              <NotificationStackView items={[]} />
-            </div>
-          </div>
-          <div style={S.panel}>
-            <div style={S.glassCard as React.CSSProperties}>
-              <ControlCenterView />
-            </div>
-          </div>
+      <div style={S.glassCard as React.CSSProperties}>
+        <div style={S.content(activeIdx === 0)}>
+          <NotificationStackView items={[]} />
+        </div>
+        <div style={S.content(activeIdx === 1)}>
+          <ControlCenterView />
         </div>
       </div>
     </div>
