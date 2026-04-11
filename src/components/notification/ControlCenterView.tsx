@@ -20,7 +20,7 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center', justifyContent: 'center',
-    padding: '16px 20px', gap: 14,
+    padding: '0 20px', gap: 14,
     fontFamily: 'system-ui, -apple-system, sans-serif',
     color: 'rgba(255,255,255,0.92)',
   },
@@ -81,7 +81,6 @@ export function ControlCenterView() {
 
   return (
     <div style={S.root} data-testid="control-center">
-      <div style={S.title}>控制中心</div>
       <div style={S.grid}>
         {TOGGLES.map(t => (
           <div key={t.id} style={S.tile(toggles[t.id])}
