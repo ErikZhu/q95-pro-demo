@@ -92,9 +92,13 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
         <div style={S.btnRow}>
           <div style={S.btnWrap as React.CSSProperties}>
             <button style={S.declineBtn as React.CSSProperties} onClick={() => { setState('ended'); onDecline?.(); }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" fill="white"/>
-                <line x1="4" y1="4" x2="20" y2="20" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+              <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+                {/* 听筒上半部分（耳朵） */}
+                <path d="M8 6C8 6 6 6 6 9L6 13C6 14 7 15 8 15" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                {/* 听筒下半部分（嘴） */}
+                <path d="M24 17C24 17 26 17 26 20L26 24C26 25 25 26 24 26" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                {/* 斜线穿过 */}
+                <line x1="4" y1="4" x2="28" y2="28" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
               </svg>
             </button>
             <span style={S.btnLabel}>拒接</span>
@@ -111,9 +115,10 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
       )}
       {state === 'active' && (
         <button style={S.hangupBtn as React.CSSProperties} onClick={() => setState('ended')}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" fill="white"/>
-            <line x1="4" y1="4" x2="20" y2="20" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+            <path d="M8 6C8 6 6 6 6 9L6 13C6 14 7 15 8 15" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <path d="M24 17C24 17 26 17 26 20L26 24C26 25 25 26 24 26" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <line x1="4" y1="4" x2="28" y2="28" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
           </svg>
         </button>
       )}
