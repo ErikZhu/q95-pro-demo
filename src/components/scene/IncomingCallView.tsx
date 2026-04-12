@@ -14,6 +14,8 @@ export interface IncomingCallViewProps {
   onMinimize?: (seconds: number) => void;
 }
 
+const AVATAR_URL = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&q=80';
+
 const S = {
   root: {
     width: '100%', height: '100%',
@@ -109,7 +111,7 @@ export function IncomingCallView({ callerName, callerNumber, onDecline, onMinimi
   if (state === 'ended') {
     return (
       <div style={S.root}>
-        <div style={S.avatar}>👤</div>
+        <img src={AVATAR_URL} alt="caller" style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(127,73,232,0.4)" }} />
         <div style={S.name}>通话已结束</div>
         <div style={S.timer}>{fmt(seconds)}</div>
       </div>
@@ -119,7 +121,7 @@ export function IncomingCallView({ callerName, callerNumber, onDecline, onMinimi
   return (
     <div style={{ ...S.root, position: 'relative' as const }} data-testid="incoming-call">
       <div style={S.label}>{state === 'ringing' ? '来电' : '通话中'}</div>
-      <div style={S.avatar}>👤</div>
+      <img src={AVATAR_URL} alt="caller" style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(127,73,232,0.4)" }} />
       <div style={S.name}>{callerName}</div>
       <div style={S.number}>{callerNumber}</div>
       {state === 'active' && <div style={S.timer}>{fmt(seconds)}</div>}

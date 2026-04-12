@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from 'react';
  * 替换 AI 球位置，显示电话图标+通话人+计时+挂断+展开
  */
 
+const AVATAR_URL = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&q=80';
+
 export interface MiniCallBarProps {
   callerName: string;
   initialSeconds: number;
@@ -52,9 +54,7 @@ export function MiniCallBar({ callerName, initialSeconds, onHangup, onExpand }: 
 
   return (
     <div style={S.bar} onClick={onExpand} data-testid="mini-call-bar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="#34C759" stroke="none">
-        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.12.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0122 16.92z"/>
-      </svg>
+      <img src={AVATAR_URL} alt="caller" style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover' as const, flexShrink: 0, border: '1.5px solid rgba(52,199,89,0.4)' }} />
       <span style={S.name}>{callerName}</span>
       <span style={S.timer}>{fmt(seconds)}</span>
       <button style={S.hangup as React.CSSProperties} onClick={e => { e.stopPropagation(); onHangup?.(); }}>
