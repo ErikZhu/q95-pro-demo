@@ -16,6 +16,9 @@ import { AIAssistantView } from './components/ai/AIAssistantView';
 import { TranslatorView } from './components/translator/TranslatorView';
 import { TeleprompterView } from './components/teleprompter/TeleprompterView';
 import { HealthMonitorView } from './components/health/HealthMonitorView';
+import { IncomingCallView } from './components/scene/IncomingCallView';
+import { IslandNotification } from './components/scene/IslandNotification';
+import { AIScanView } from './components/scene/AIScanView';
 import { MessagingView } from './components/messaging/MessagingView';
 import { SettingsPanelView } from './components/settings/SettingsPanel';
 import { DemoControlPanel } from './components/demo/DemoControlPanel';
@@ -29,7 +32,6 @@ import type { OrbMenuState } from './services/OrbMenuStateMachine';
 import { SmartTaskZoneService } from './services/SmartTaskZone';
 import { NavigationEngine } from './services/NavigationEngine';
 import type { OrbMenuItemData } from './components/smart-task/OrbMenuItem';
-import { OrbMenuView } from './components/smart-task/OrbMenuView';
 import { sendChat } from './services/DeepSeekChat';
 import type { AIStatus } from './types/ai';
 
@@ -94,6 +96,7 @@ export default function App() {
   const [navPoiQuery, setNavPoiQuery] = useState('');
   const [navSelectedIdx, setNavSelectedIdx] = useState(-1);
   const [navConfirmedPoi, setNavConfirmedPoi] = useState<POIResult | null>(null);
+  const [showIsland, setShowIsland] = useState(false);
 
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
@@ -240,6 +243,14 @@ export default function App() {
   }, []);
 
   const onInput = useCallback(async (e: InputEvent) => {
+    // 场景模拟事件
+    if (e.type === 'scene' && e.data?.scene) {
+      const scene = String(e.data.scene);
+      if (scene === 'incoming_call') { setActiveView('incoming-call'); return; }
+      if (scene === 'island_notif') { setShowIsland(true); return; }
+      if (scene === 'ai_scan') { setActiveView('ai-scan'); return; }
+    }
+
     // 返回按钮 → 回到首页
     if (e.type === 'back') {
       setActiveView('home');
@@ -375,6 +386,8 @@ export default function App() {
     'settings': '小Q正在帮你调整设置...',
     'messaging': '小Q正在帮你处理消息...',
     'teleprompter': '小Q正在帮你提词...',
+    'incoming-call': '小Q正在帮你接听电话...',
+    'ai-scan': '小Q正在帮你识别物体...',
   };
   // 当 aiStatus 回到 idle 且不在首页时，设置任务提示
   useEffect(() => {
@@ -416,12 +429,15 @@ export default function App() {
       case 'health': return <HealthMonitorView state={{ status: 'idle', healthData: { steps: 8500, heartRate: 72, calories: 320, lastUpdated: Date.now() }, currentWorkout: null, alerts: [], deviceConnected: true, deviceName: 'Apple Watch Ultra' }} />;
       case 'messaging': return <MessagingView state={{ messages: [], callState: { status: 'idle', callerName: null, callerNumber: null, duration: 0, useMic: true, useSpeaker: true }, bluetoothStatus: 'connected', bluetoothWarning: null }} />;
       case 'settings': return <SettingsPanelView state={sState} />;
+      case 'incoming-call': return <IncomingCallView callerName="张伟" callerNumber="138****6789" onDecline={() => setActiveView('home')} />;
+      case 'ai-scan': return <AIScanView />;
       default: return <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
     }
   };
 
   const layout = () => (
     <div className="screen-layout">
+      <IslandNotification visible={showIsland} onDismiss={() => setShowIsland(false)} />
       <div className="top-bar-row">
         <div className="smart-task-zone-slot">
           <SmartTaskZoneView

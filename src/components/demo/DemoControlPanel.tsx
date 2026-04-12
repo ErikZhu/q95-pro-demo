@@ -252,6 +252,22 @@ export function DemoControlPanel({ visible, onToggle, onInput, onGazeCursorMove 
             <span style={{ pointerEvents: 'none' }}>移动鼠标模拟注视</span>
           </div>
         </div>
+
+        {/* 7. 场景模拟 */}
+        <div style={S.section} data-testid="section-scene-sim">
+          <div style={S.sectionLabel}><Icon name="scooter" size={12} /> 场景模拟 Scene Simulation</div>
+          <div style={S.row}>
+            <button style={S.btn(activeBtn === 'scene-call')} data-testid="scene-call" onClick={() => fire('scene-call', 'voice', 'scene', { scene: 'incoming_call' })}>
+              📞 来电
+            </button>
+            <button style={S.btn(activeBtn === 'scene-island')} data-testid="scene-island" onClick={() => fire('scene-island', 'voice', 'scene', { scene: 'island_notif' })}>
+              🏝️ 灵动岛
+            </button>
+            <button style={S.btn(activeBtn === 'scene-scan')} data-testid="scene-scan" onClick={() => fire('scene-scan', 'voice', 'scene', { scene: 'ai_scan' })}>
+              🔍 AI扫一扫
+            </button>
+          </div>
+        </div>
       </div>
       <div style={S.footer}>键盘快捷键在面板打开时生效 · P/Enter/Esc/+/-/方向键/空格</div>
     </div>
