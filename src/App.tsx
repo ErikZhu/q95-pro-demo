@@ -443,9 +443,21 @@ export default function App() {
             onGazeItem={(itemId) => orbMenuSM.send({ type: 'GAZE_ITEM', itemId })}
             onGazeItemEnd={() => orbMenuSM.send({ type: 'GAZE_ITEM_END' })}
             onConfirmSelect={(source) => orbMenuSM.send({ type: 'CONFIRM_SELECT', source })}
-            onOrbGazeStart={() => orbMenuSM.send({ type: 'GAZE_ORB_START' })}
-            onOrbGazeEnd={() => orbMenuSM.send({ type: 'GAZE_ORB_END' })}
-            onOrbClick={() => setOrbMenuState(prev => prev === 'orb_idle' ? 'orb_menu_open' : 'orb_idle')}
+            onOrbGazeStart={() => {
+              orbMenuSM.send({ type: 'GAZE_ORB_START' });
+              // 3秒注视 → 直接打开通控面板
+              (window as any).__orbGazeTimer = setTimeout(() => {
+                setActiveView('notifications');
+              }, 3000);
+            }}
+            onOrbGazeEnd={() => {
+              orbMenuSM.send({ type: 'GAZE_ORB_END' });
+              if ((window as any).__orbGazeTimer) {
+                clearTimeout((window as any).__orbGazeTimer);
+                (window as any).__orbGazeTimer = null;
+              }
+            }}
+            onOrbClick={() => setActiveView('notifications')}
           />
         </div>
         <div className="status-bar-slot"><StatusBarView status={device} isExpanded={false} /></div>
@@ -461,21 +473,6 @@ export default function App() {
           />
         )}
       </div>
-      <OrbMenuView
-        menuState={orbMenuState}
-        menuItems={ORB_MENU_ITEMS}
-        focusedItemId={focusedItemId}
-        activeAppId={activeAppId}
-        orbPosition={{ x: 400, y: 300 }}
-        onGazeItem={(itemId) => orbMenuSM.send({ type: 'GAZE_ITEM', itemId })}
-        onGazeItemEnd={() => orbMenuSM.send({ type: 'GAZE_ITEM_END' })}
-        onConfirmSelect={(source) => orbMenuSM.send({ type: 'CONFIRM_SELECT', source })}
-        onItemClick={(item) => {
-          setActiveView(item.id);
-          setActiveAppId(item.id);
-          setOrbMenuState('orb_idle');
-        }}
-      />
     </div>
   );
 
