@@ -1,18 +1,24 @@
 /**
  * ControlCenterView — 控制中心面板
- * 快捷开关：WiFi、蓝牙、勿扰、亮度、音量、手电筒
+ * 上排：4个小开关（WiFi/蓝牙/勿扰/帮助）在横条玻璃容器
+ * 下排：3个大方块（音量/亮度/设置）带弧形进度指示
  */
 import { useState } from 'react';
 
-interface Toggle { id: string; label: string; emoji: string; defaultOn: boolean; }
+interface SmallToggle { id: string; icon: string; defaultOn: boolean; }
+interface BigTile { id: string; icon: string; hasArc: boolean; defaultVal: number; }
 
-const TOGGLES: Toggle[] = [
-  { id: 'wifi', label: 'WiFi', emoji: '📶', defaultOn: true },
-  { id: 'bt', label: '蓝牙', emoji: '🔵', defaultOn: true },
-  { id: 'dnd', label: '勿扰', emoji: '🌙', defaultOn: false },
-  { id: 'torch', label: '手电', emoji: '🔦', defaultOn: false },
-  { id: 'airdrop', label: '投屏', emoji: '📡', defaultOn: false },
-  { id: 'location', label: '定位', emoji: '📍', defaultOn: true },
+const SMALL_TOGGLES: SmallToggle[] = [
+  { id: 'wifi', icon: '📶', defaultOn: true },
+  { id: 'bt', icon: '᛫', defaultOn: true },
+  { id: 'dnd', icon: '🌙', defaultOn: false },
+  { id: 'help', icon: '❓', defaultOn: false },
+];
+
+const BIG_TILES: BigTile[] = [
+  { id: 'volume', icon: '🔊', hasArc: true, defaultVal: 65 },
+  { id: 'brightness', icon: '☀️', hasArc: true, defaultVal: 70 },
+  { id: 'settings', icon: '⚙️', hasArc: false, defaultVal: 0 },
 ];
 
 const S = {
@@ -20,95 +26,109 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center', justifyContent: 'center',
-    padding: '0 20px', gap: 14,
+    padding: '0 24px', gap: 16,
     fontFamily: 'system-ui, -apple-system, sans-serif',
-    color: 'rgba(255,255,255,0.92)',
   },
-  title: {
-    fontSize: 14, fontWeight: 600 as const,
-    color: 'rgba(255,255,255,0.7)', letterSpacing: 0.5,
+  topRow: {
+    display: 'flex', gap: 6,
+    padding: '8px 10px',
+    borderRadius: 16,
+    background: 'rgba(255,255,255,0.06)',
+    backdropFilter: 'blur(16px)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.2)',
   },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 10, width: '100%', maxWidth: 360,
-  },
-  tile: (on: boolean): React.CSSProperties => ({
-    display: 'flex', flexDirection: 'column',
-    alignItems: 'center', justifyContent: 'center',
-    gap: 6, padding: '14px 8px',
-    borderRadius: 14,
-    background: on ? 'rgba(127, 73, 232, 0.15)' : 'rgba(255,255,255,0.04)',
-    backdropFilter: 'blur(20px) saturate(1.3)',
-    border: on ? '1.5px solid rgba(127,73,232,0.4)' : '1.5px solid rgba(255,255,255,0.06)',
+  smallBtn: (on: boolean): React.CSSProperties => ({
+    width: 52, height: 52,
+    borderRadius: 12,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    background: on ? 'rgba(127,73,232,0.2)' : 'rgba(255,255,255,0.05)',
+    border: on ? '1px solid rgba(127,73,232,0.4)' : '1px solid rgba(255,255,255,0.06)',
     cursor: 'pointer', transition: 'all 0.2s ease',
-    boxShadow: on ? '0 0 12px rgba(127,73,232,0.15)' : 'none',
+    fontSize: 20,
+    boxShadow: on ? '0 0 8px rgba(127,73,232,0.2)' : 'none',
   }),
-  emoji: { fontSize: 22 },
-  label: (on: boolean): React.CSSProperties => ({
-    fontSize: 10, fontWeight: 500,
-    color: on ? 'rgba(127,73,232,0.9)' : 'rgba(255,255,255,0.45)',
-  }),
-  slider: {
-    width: '100%', maxWidth: 360,
-    display: 'flex', flexDirection: 'column' as const, gap: 8,
+  btIcon: {
+    fontSize: 22, fontWeight: 700 as const,
+    color: 'rgba(255,255,255,0.8)',
+    fontFamily: 'serif',
   },
-  sliderRow: {
-    display: 'flex', alignItems: 'center', gap: 10,
+  bottomRow: {
+    display: 'flex', gap: 12,
   },
-  sliderLabel: {
-    fontSize: 11, color: 'rgba(255,255,255,0.4)', width: 32, flexShrink: 0,
+  bigTile: {
+    width: 100, height: 100,
+    borderRadius: 18,
+    background: 'rgba(255,255,255,0.05)',
+    backdropFilter: 'blur(16px)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.2)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    position: 'relative' as const,
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    fontSize: 28,
   },
-  sliderTrack: {
-    flex: 1, height: 4, borderRadius: 2,
-    background: 'rgba(255,255,255,0.08)',
-    position: 'relative' as const, overflow: 'hidden',
-  },
-  sliderFill: (pct: number): React.CSSProperties => ({
-    position: 'absolute', top: 0, left: 0, bottom: 0,
-    width: `${pct}%`, borderRadius: 2,
-    background: 'linear-gradient(90deg, rgba(127,73,232,0.6), rgba(127,73,232,0.9))',
-    transition: 'width 0.2s ease',
-  }),
 };
+
+/** 弧形进度 SVG */
+function ArcProgress({ value, size = 60 }: { value: number; size?: number }) {
+  const r = (size - 6) / 2;
+  const circ = 2 * Math.PI * r;
+  const arc = circ * 0.75; // 270 度弧
+  const offset = arc - (arc * value) / 100;
+  return (
+    <svg width={size} height={size} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%) rotate(135deg)' }}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none"
+        stroke="rgba(255,255,255,0.08)" strokeWidth="3"
+        strokeDasharray={`${arc} ${circ}`} strokeLinecap="round" />
+      <circle cx={size/2} cy={size/2} r={r} fill="none"
+        stroke="rgba(255,255,255,0.7)" strokeWidth="3"
+        strokeDasharray={`${arc} ${circ}`}
+        strokeDashoffset={offset} strokeLinecap="round"
+        style={{ transition: 'stroke-dashoffset 0.3s ease' }} />
+    </svg>
+  );
+}
 
 export function ControlCenterView() {
   const [toggles, setToggles] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(TOGGLES.map(t => [t.id, t.defaultOn]))
+    () => Object.fromEntries(SMALL_TOGGLES.map(t => [t.id, t.defaultOn]))
   );
-  const [brightness, setBrightness] = useState(70);
-  const [volume, setVolume] = useState(50);
+  const [vals, setVals] = useState<Record<string, number>>(
+    () => Object.fromEntries(BIG_TILES.map(t => [t.id, t.defaultVal]))
+  );
+
+  const cycleBigTile = (id: string) => {
+    if (id === 'settings') return;
+    setVals(prev => ({ ...prev, [id]: (prev[id] + 20) % 120 }));
+  };
 
   return (
     <div style={S.root} data-testid="control-center">
-      <div style={S.grid}>
-        {TOGGLES.map(t => (
-          <div key={t.id} style={S.tile(toggles[t.id])}
+      {/* 上排：4个小开关 */}
+      <div style={S.topRow as React.CSSProperties}>
+        {SMALL_TOGGLES.map(t => (
+          <div key={t.id} style={S.smallBtn(toggles[t.id])}
             onClick={() => setToggles(prev => ({ ...prev, [t.id]: !prev[t.id] }))}>
-            <span style={S.emoji}>{t.emoji}</span>
-            <span style={S.label(toggles[t.id])}>{t.label}</span>
+            {t.id === 'bt' ? (
+              <span style={S.btIcon}>ᛒ</span>
+            ) : (
+              <span>{t.icon}</span>
+            )}
           </div>
         ))}
       </div>
-      <div style={S.slider}>
-        <div style={S.sliderRow}>
-          <span style={S.sliderLabel}>☀️</span>
-          <div style={S.sliderTrack} onClick={e => {
-            const r = e.currentTarget.getBoundingClientRect();
-            setBrightness(Math.round(((e.clientX - r.left) / r.width) * 100));
-          }}>
-            <div style={S.sliderFill(brightness)} />
+
+      {/* 下排：3个大方块 */}
+      <div style={S.bottomRow}>
+        {BIG_TILES.map(t => (
+          <div key={t.id} style={S.bigTile as React.CSSProperties}
+            onClick={() => cycleBigTile(t.id)}>
+            {t.hasArc && <ArcProgress value={Math.min(vals[t.id], 100)} size={70} />}
+            <span style={{ position: 'relative', zIndex: 1 }}>{t.icon}</span>
           </div>
-        </div>
-        <div style={S.sliderRow}>
-          <span style={S.sliderLabel}>🔊</span>
-          <div style={S.sliderTrack} onClick={e => {
-            const r = e.currentTarget.getBoundingClientRect();
-            setVolume(Math.round(((e.clientX - r.left) / r.width) * 100));
-          }}>
-            <div style={S.sliderFill(volume)} />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
