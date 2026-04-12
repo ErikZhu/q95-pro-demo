@@ -61,7 +61,7 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center',
-    padding: '16px 24px 0', gap: 12,
+    padding: '30px 24px 0', gap: 12,
   },
   topRow: {
     width: TOTAL_W,
