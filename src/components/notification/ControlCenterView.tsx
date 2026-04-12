@@ -54,14 +54,14 @@ const IC = {
   ),
 };
 
-const TOTAL_W = 324; // 3*100 + 2*12
+const TOTAL_W = 280; // 3*84 + 2*14
 
 const S = {
   root: {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
-    alignItems: 'center', justifyContent: 'center',
-    gap: 14,
+    alignItems: 'center',
+    padding: '16px 24px 0', gap: 12,
   },
   topRow: {
     width: TOTAL_W,
@@ -86,7 +86,7 @@ const S = {
   }),
   bottomRow: {
     width: TOTAL_W,
-    display: 'flex', gap: 12,
+    display: 'flex', gap: 14,
   },
   bigTile: {
     flex: 1,

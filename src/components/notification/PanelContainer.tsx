@@ -41,7 +41,7 @@ const S = {
   }),
   glassCard: {
     flex: 1,
-    width: '100%', maxWidth: 560,
+    width: '100%', maxWidth: 440,
     borderRadius: 20,
     background: 'rgba(255, 255, 255, 0.04)',
     backdropFilter: 'blur(24px) saturate(1.3)',
