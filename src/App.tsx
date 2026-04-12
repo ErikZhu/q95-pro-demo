@@ -19,6 +19,7 @@ import { HealthMonitorView } from './components/health/HealthMonitorView';
 import { IncomingCallView } from './components/scene/IncomingCallView';
 import { IslandNotification } from './components/scene/IslandNotification';
 import { AIScanView } from './components/scene/AIScanView';
+import { MiniCallBar } from './components/scene/MiniCallBar';
 import { MessagingView } from './components/messaging/MessagingView';
 import { SettingsPanelView } from './components/settings/SettingsPanel';
 import { DemoControlPanel } from './components/demo/DemoControlPanel';
@@ -97,6 +98,7 @@ export default function App() {
   const [navSelectedIdx, setNavSelectedIdx] = useState(-1);
   const [navConfirmedPoi, setNavConfirmedPoi] = useState<POIResult | null>(null);
   const [showIsland, setShowIsland] = useState(false);
+  const [miniCall, setMiniCall] = useState<{ callerName: string; seconds: number } | null>(null);
 
   const orbMenuSM = useMemo(() => {
     return new OrbMenuStateMachine(
@@ -429,7 +431,7 @@ export default function App() {
       case 'health': return <HealthMonitorView state={{ status: 'idle', healthData: { steps: 8500, heartRate: 72, calories: 320, lastUpdated: Date.now() }, currentWorkout: null, alerts: [], deviceConnected: true, deviceName: 'Apple Watch Ultra' }} />;
       case 'messaging': return <MessagingView state={{ messages: [], callState: { status: 'idle', callerName: null, callerNumber: null, duration: 0, useMic: true, useSpeaker: true }, bluetoothStatus: 'connected', bluetoothWarning: null }} />;
       case 'settings': return <SettingsPanelView state={sState} />;
-      case 'incoming-call': return <IncomingCallView callerName="张伟" callerNumber="138****6789" onDecline={() => setActiveView('home')} />;
+      case 'incoming-call': return <IncomingCallView callerName="张伟" callerNumber="138****6789" onDecline={() => { setMiniCall(null); setActiveView('home'); }} onMinimize={(secs) => { setMiniCall({ callerName: '张伟', seconds: secs }); setActiveView('home'); }} />;
       case 'ai-scan': return <AIScanView />;
       default: return <Launcher deviceStatus={device} onLaunchApp={launchApp} />;
     }
@@ -440,6 +442,14 @@ export default function App() {
       <IslandNotification visible={showIsland} onDismiss={() => setShowIsland(false)} />
       <div className="top-bar-row">
         <div className="smart-task-zone-slot">
+          {miniCall ? (
+            <MiniCallBar
+              callerName={miniCall.callerName}
+              initialSeconds={miniCall.seconds}
+              onHangup={() => { setMiniCall(null); }}
+              onExpand={() => { setActiveView('incoming-call'); }}
+            />
+          ) : (
           <SmartTaskZoneView
             aiStatus={aiStatus}
             tasks={aiConversation.length > 0 ? [{
@@ -475,6 +485,7 @@ export default function App() {
             }}
             onOrbClick={() => setActiveView('notifications')}
           />
+          )}
         </div>
         <div className="status-bar-slot"><StatusBarView status={device} isExpanded={false} /></div>
       </div>

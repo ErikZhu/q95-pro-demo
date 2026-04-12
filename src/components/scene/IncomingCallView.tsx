@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 /**
  * IncomingCallView — 来电界面
- * 显示来电人信息 + 接听/挂断按钮
- * 接听后显示通话中计时
+ * ringing → active → ended
+ * active 状态可收起到状态栏
  */
 
 export interface IncomingCallViewProps {
@@ -11,6 +11,7 @@ export interface IncomingCallViewProps {
   callerNumber: string;
   onAnswer?: () => void;
   onDecline?: () => void;
+  onMinimize?: (seconds: number) => void;
 }
 
 const S = {
@@ -36,40 +37,74 @@ const S = {
     width: 52, height: 52, borderRadius: '50%',
     background: '#FF3B30', border: 'none',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    cursor: 'pointer',
-    boxShadow: '0 0 16px rgba(255,59,48,0.4)',
+    cursor: 'pointer', boxShadow: '0 0 16px rgba(255,59,48,0.4)',
   },
   answerBtn: {
     width: 72, height: 52, borderRadius: 26,
     background: '#34C759', border: 'none',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    cursor: 'pointer',
-    boxShadow: '0 0 16px rgba(52,199,89,0.4)',
+    cursor: 'pointer', boxShadow: '0 0 16px rgba(52,199,89,0.4)',
   },
   hangupBtn: {
     width: 52, height: 52, borderRadius: '50%',
     background: '#FF3B30', border: 'none',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    cursor: 'pointer',
-    boxShadow: '0 0 16px rgba(255,59,48,0.4)',
+    cursor: 'pointer', boxShadow: '0 0 16px rgba(255,59,48,0.4)',
   },
   btnLabel: { fontSize: 11, color: 'rgba(255,255,255,0.5)' },
   timer: { fontSize: 16, color: 'rgba(127,73,232,0.9)', fontFamily: 'monospace' },
+  minimizeBtn: {
+    position: 'absolute' as const, top: 12, right: 12,
+    width: 28, height: 28, borderRadius: 8,
+    background: 'rgba(255,255,255,0.08)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer', color: 'rgba(255,255,255,0.5)', fontSize: 14,
+  },
+  activeRow: {
+    display: 'flex', alignItems: 'center', gap: 24,
+  },
 };
 
-export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline }: IncomingCallViewProps) {
+const PhoneIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+  </svg>
+);
+
+const DeclineIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10.68 13.31a16 16 0 003.41 2.6l1.1-1.1a2 2 0 012.11-.45 12.84 12.84 0 002.7.42 2 2 0 012 2v3a2 2 0 01-2.18 2A19.79 19.79 0 013.18 5.18 2 2 0 015.18 3h3a2 2 0 012 2 12.84 12.84 0 00.42 2.7 2 2 0 01-.45 2.11l-1.1 1.1"/>
+    <line x1="22" y1="2" x2="2" y2="22"/>
+  </svg>
+);
+
+const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+
+export function IncomingCallView({ callerName, callerNumber, onDecline, onMinimize }: IncomingCallViewProps) {
   const [state, setState] = useState<'ringing' | 'active' | 'ended'>('ringing');
   const [seconds, setSeconds] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const handleAnswer = () => {
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+  }, []);
+
+  const handleAnswer = useCallback(() => {
     setState('active');
-    onAnswer?.();
-    const t = setInterval(() => setSeconds(s => s + 1), 1000);
-    // auto-end after 30s for demo
-    setTimeout(() => { clearInterval(t); setState('ended'); }, 30000);
-  };
+    timerRef.current = setInterval(() => setSeconds(s => s + 1), 1000);
+  }, []);
 
-  const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  const handleEnd = useCallback(() => {
+    stopTimer();
+    setState('ended');
+  }, [stopTimer]);
+
+  const handleMinimize = useCallback(() => {
+    onMinimize?.(seconds);
+  }, [onMinimize, seconds]);
+
+  useEffect(() => { return () => stopTimer(); }, [stopTimer]);
 
   if (state === 'ended') {
     return (
@@ -82,7 +117,7 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
   }
 
   return (
-    <div style={S.root} data-testid="incoming-call">
+    <div style={{ ...S.root, position: 'relative' as const }} data-testid="incoming-call">
       <div style={S.label}>{state === 'ringing' ? '来电' : '通话中'}</div>
       <div style={S.avatar}>👤</div>
       <div style={S.name}>{callerName}</div>
@@ -91,30 +126,29 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
       {state === 'ringing' && (
         <div style={S.btnRow}>
           <div style={S.btnWrap as React.CSSProperties}>
-            <button style={S.declineBtn as React.CSSProperties} onClick={() => { setState('ended'); onDecline?.(); }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10.68 13.31a16 16 0 003.41 2.6l1.1-1.1a2 2 0 012.11-.45 12.84 12.84 0 002.7.42 2 2 0 012 2v3a2 2 0 01-2.18 2A19.79 19.79 0 013.18 5.18 2 2 0 015.18 3h3a2 2 0 012 2 12.84 12.84 0 00.42 2.7 2 2 0 01-.45 2.11l-1.1 1.1"/>
-                <line x1="22" y1="2" x2="2" y2="22"/>
-              </svg>
+            <button style={S.declineBtn as React.CSSProperties} onClick={() => { handleEnd(); onDecline?.(); }}>
+              <DeclineIcon />
             </button>
             <span style={S.btnLabel}>拒接</span>
           </div>
           <div style={S.btnWrap as React.CSSProperties}>
             <button style={S.answerBtn as React.CSSProperties} onClick={handleAnswer}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" fill="white"/>
-              </svg>
+              <PhoneIcon />
             </button>
             <span style={S.btnLabel}>接听</span>
           </div>
         </div>
       )}
       {state === 'active' && (
-        <button style={S.hangupBtn as React.CSSProperties} onClick={() => setState('ended')}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M10.68 13.31a16 16 0 003.41 2.6l1.1-1.1a2 2 0 012.11-.45 12.84 12.84 0 002.7.42 2 2 0 012 2v3a2 2 0 01-2.18 2A19.79 19.79 0 013.18 5.18 2 2 0 015.18 3h3a2 2 0 012 2 12.84 12.84 0 00.42 2.7 2 2 0 01-.45 2.11l-1.1 1.1"/>
-            <line x1="22" y1="2" x2="2" y2="22"/>
-          </svg>
+        <div style={S.activeRow}>
+          <button style={S.hangupBtn as React.CSSProperties} onClick={handleEnd}>
+            <DeclineIcon />
+          </button>
+        </div>
+      )}
+      {state === 'active' && (
+        <button style={S.minimizeBtn as React.CSSProperties} onClick={handleMinimize} title="收起到状态栏">
+          ⌄
         </button>
       )}
     </div>
