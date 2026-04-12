@@ -30,15 +30,30 @@ const S = {
   name: { fontSize: 20, fontWeight: 600 as const, color: 'rgba(255,255,255,0.92)' },
   number: { fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: -12 },
   label: { fontSize: 11, color: 'rgba(127,73,232,0.7)', letterSpacing: 1 },
-  btnRow: { display: 'flex', gap: 32 },
-  btn: (color: string): React.CSSProperties => ({
+  btnRow: { display: 'flex', gap: 32, alignItems: 'flex-start' },
+  btnWrap: { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 6 },
+  declineBtn: {
     width: 52, height: 52, borderRadius: '50%',
-    background: color, border: 'none',
+    background: '#FF3B30', border: 'none',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    cursor: 'pointer', fontSize: 22,
-    boxShadow: `0 0 16px ${color}60`,
-    transition: 'transform 0.15s ease',
-  }),
+    cursor: 'pointer',
+    boxShadow: '0 0 16px rgba(255,59,48,0.4)',
+  },
+  answerBtn: {
+    width: 72, height: 52, borderRadius: 26,
+    background: '#34C759', border: 'none',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer',
+    boxShadow: '0 0 16px rgba(52,199,89,0.4)',
+  },
+  hangupBtn: {
+    width: 52, height: 52, borderRadius: '50%',
+    background: '#FF3B30', border: 'none',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer',
+    boxShadow: '0 0 16px rgba(255,59,48,0.4)',
+  },
+  btnLabel: { fontSize: 11, color: 'rgba(255,255,255,0.5)' },
   timer: { fontSize: 16, color: 'rgba(127,73,232,0.9)', fontFamily: 'monospace' },
 };
 
@@ -75,12 +90,32 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
       {state === 'active' && <div style={S.timer}>{fmt(seconds)}</div>}
       {state === 'ringing' && (
         <div style={S.btnRow}>
-          <button style={S.btn('#FF3B30')} onClick={() => { setState('ended'); onDecline?.(); }}>✕</button>
-          <button style={S.btn('#34C759')} onClick={handleAnswer}>✓</button>
+          <div style={S.btnWrap as React.CSSProperties}>
+            <button style={S.declineBtn as React.CSSProperties} onClick={() => { setState('ended'); onDecline?.(); }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" fill="white"/>
+                <line x1="4" y1="4" x2="20" y2="20" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+            <span style={S.btnLabel}>拒接</span>
+          </div>
+          <div style={S.btnWrap as React.CSSProperties}>
+            <button style={S.answerBtn as React.CSSProperties} onClick={handleAnswer}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" fill="white"/>
+              </svg>
+            </button>
+            <span style={S.btnLabel}>接听</span>
+          </div>
         </div>
       )}
       {state === 'active' && (
-        <button style={S.btn('#FF3B30')} onClick={() => setState('ended')}>✕</button>
+        <button style={S.hangupBtn as React.CSSProperties} onClick={() => setState('ended')}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" fill="white"/>
+            <line x1="4" y1="4" x2="20" y2="20" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+          </svg>
+        </button>
       )}
     </div>
   );
