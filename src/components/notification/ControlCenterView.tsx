@@ -26,11 +26,10 @@ const IC = {
       <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
-  help: (c: string) => (
+  camera: (c: string) => (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" stroke={c} strokeWidth="2"/>
-      <path d="M9.5 9a3 3 0 015.13 2.13c0 2-3 2.5-3 2.5" stroke={c} strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="12" cy="17" r="0.5" fill={c} stroke={c} strokeWidth="1"/>
+      <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="13" r="4" stroke={c} strokeWidth="2"/>
     </svg>
   ),
   volume: (c: string) => (
@@ -61,7 +60,7 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center',
-    padding: '30px 24px 0', gap: 12,
+    padding: '50px 24px 0', gap: 12,
   },
   topRow: {
     width: TOTAL_W,
@@ -119,7 +118,7 @@ const SMALLS = [
   { id: 'wifi', render: IC.wifi, defaultOn: true },
   { id: 'bt', render: IC.bluetooth, defaultOn: true },
   { id: 'dnd', render: IC.moon, defaultOn: false },
-  { id: 'help', render: IC.help, defaultOn: false },
+  { id: 'camera', render: IC.camera, defaultOn: false },
 ];
 
 const BIGS = [
