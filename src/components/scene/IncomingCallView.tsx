@@ -94,7 +94,7 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
             <button style={S.declineBtn as React.CSSProperties} onClick={() => { setState('ended'); onDecline?.(); }}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M10.68 13.31a16 16 0 003.41 2.6l1.1-1.1a2 2 0 012.11-.45 12.84 12.84 0 002.7.42 2 2 0 012 2v3a2 2 0 01-2.18 2A19.79 19.79 0 013.18 5.18 2 2 0 015.18 3h3a2 2 0 012 2 12.84 12.84 0 00.42 2.7 2 2 0 01-.45 2.11l-1.1 1.1"/>
-                <line x1="2" y1="2" x2="22" y2="22"/>
+                <line x1="22" y1="2" x2="2" y2="22"/>
               </svg>
             </button>
             <span style={S.btnLabel}>拒接</span>
@@ -113,7 +113,7 @@ export function IncomingCallView({ callerName, callerNumber, onAnswer, onDecline
         <button style={S.hangupBtn as React.CSSProperties} onClick={() => setState('ended')}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M10.68 13.31a16 16 0 003.41 2.6l1.1-1.1a2 2 0 012.11-.45 12.84 12.84 0 002.7.42 2 2 0 012 2v3a2 2 0 01-2.18 2A19.79 19.79 0 013.18 5.18 2 2 0 015.18 3h3a2 2 0 012 2 12.84 12.84 0 00.42 2.7 2 2 0 01-.45 2.11l-1.1 1.1"/>
-            <line x1="2" y1="2" x2="22" y2="22"/>
+            <line x1="22" y1="2" x2="2" y2="22"/>
           </svg>
         </button>
       )}
