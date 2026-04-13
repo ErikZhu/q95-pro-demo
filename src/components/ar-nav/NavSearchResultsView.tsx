@@ -33,7 +33,7 @@ const S = {
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center', justifyContent: 'center',
     padding: '24px 32px',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     color: 'rgba(255, 255, 255, 0.92)', gap: 16,
   },
   title: {

@@ -63,6 +63,7 @@ const S = {
     alignItems: 'center',
     gap: 10,
     padding: '0 12px',
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     background: 'rgba(15, 12, 30, 0.85)',
     backdropFilter: 'blur(20px) saturate(1.4)',
     WebkitBackdropFilter: 'blur(20px) saturate(1.4)',

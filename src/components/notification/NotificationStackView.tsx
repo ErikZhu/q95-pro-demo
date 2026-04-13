@@ -133,7 +133,7 @@ const S = {
   root: {
     width: '100%', height: '100%',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     perspective: '800px',
     perspectiveOrigin: '50% 40%',
   },

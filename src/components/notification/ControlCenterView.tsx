@@ -60,6 +60,7 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center',
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     padding: '50px 24px 0', gap: 12,
   },
   topRow: {

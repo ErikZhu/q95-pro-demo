@@ -29,7 +29,7 @@ const S = {
     flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     color: 'rgba(255, 255, 255, 0.92)',
     padding: '20px 24px',
     gap: 0,
@@ -64,7 +64,7 @@ const S = {
     fontWeight: 700 as const,
     color: '#7F49E8',
     lineHeight: 1,
-    letterSpacing: -1,
+    letterSpacing: -0.5,
   },
   distUnit: {
     fontSize: 18,

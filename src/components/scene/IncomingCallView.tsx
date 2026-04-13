@@ -21,7 +21,7 @@ const S = {
     width: '100%', height: '100%',
     display: 'flex', flexDirection: 'column' as const,
     alignItems: 'center', justifyContent: 'center',
-    gap: 20, fontFamily: 'system-ui, -apple-system, sans-serif',
+    gap: 20, fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
   },
   avatar: {
     width: 64, height: 64, borderRadius: '50%',

@@ -91,7 +91,7 @@ const S = {
     position: 'relative' as const,
     width: '100%',
     height: '100%',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     color: 'rgba(255, 255, 255, 0.92)',
     userSelect: 'none' as const,
   },
